@@ -6,6 +6,15 @@
 
 Tagline: *“Perjalanan Lebih Mudah, Tiket dalam Satu Genggaman.”*
 
+## Demo Online
+
+- **Website (frontend):** https://jalanyuk-rho.vercel.app
+- **API (backend):** https://jalanyuk-api.onrender.com — health check: `/api/health`
+- **Akun demo:** customer `demo@jalanyuk.id` / `demo123` — admin `admin@jalanyuk.id` / `admin123`
+- Catatan: backend memakai paket gratis yang tidur saat tidak dipakai; muat pertama setelah idle bisa memakan waktu ±30–60 detik (cold start).
+
+Deployment: frontend di Vercel (root directory `frontend`, env `VITE_API_URL` menunjuk ke API), backend + PostgreSQL di Render dari blueprint `render.yaml` di repo ini (build menjalankan migrasi Prisma dan mengompilasi modul C; seed dijalankan terpisah satu kali).
+
 ---
 
 ## Fitur Utama

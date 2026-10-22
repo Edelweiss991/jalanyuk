@@ -37,11 +37,48 @@ interface LabDatasetItem {
 
 let compilePromise: Promise<void> | null = null;
 
+let resolvedDemoDir: string | null = null;
+
+/**
+ * Resolve the algorithms-c directory. The layout differs between dev
+ * (tsx, sources under backend/src) and production builds (compiled output
+ * under backend/dist/src, one level deeper), so walk a few candidates and
+ * pick the first that actually contains the C sources or the binary.
+ * An explicit C_DEMO_DIR env var always wins.
+ */
+function resolveDemoDir(): string {
+  if (resolvedDemoDir) {
+    return resolvedDemoDir;
+  }
+
+  const candidates = [
+    ...(process.env.C_DEMO_DIR ? [process.env.C_DEMO_DIR] : []),
+    env.C_DEMO_DIR,
+    path.resolve(__dirname, '../../../algorithms-c'),
+    path.resolve(__dirname, '../../../../algorithms-c'),
+    path.resolve(process.cwd(), 'algorithms-c'),
+    path.resolve(process.cwd(), '../algorithms-c'),
+  ];
+
+  for (const dir of candidates) {
+    if (
+      existsSync(path.join(dir, 'src', 'main.c')) ||
+      existsSync(path.join(dir, 'jalanyuk_algorithms'))
+    ) {
+      resolvedDemoDir = dir;
+      return dir;
+    }
+  }
+
+  resolvedDemoDir = env.C_DEMO_DIR;
+  return resolvedDemoDir;
+}
+
 /**
  * Resolve path to C demo binary
  */
 function resolveCDemoBin(): string {
-  return path.join(env.C_DEMO_DIR, 'jalanyuk_algorithms');
+  return path.join(resolveDemoDir(), 'jalanyuk_algorithms');
 }
 
 /**
@@ -61,8 +98,9 @@ export async function ensureCompiled(): Promise<void> {
 
   compilePromise = (async () => {
     try {
+      const demoDir = resolveDemoDir();
       const sourceFiles = ['main.c', 'pointer_demo.c', 'struct_demo.c'].map((file) =>
-        path.join(env.C_DEMO_DIR, file)
+        path.join(demoDir, 'src', file)
       );
 
       const args = [
@@ -75,7 +113,7 @@ export async function ensureCompiled(): Promise<void> {
       ];
 
       await execFilePromise('gcc', args, {
-        cwd: env.C_DEMO_DIR,
+        cwd: demoDir,
         timeout: 30000,
       });
     } catch (error) {
