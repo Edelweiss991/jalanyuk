@@ -1,0 +1,434 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum TransportType {
+  BUS
+  TRAIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  EXPIRED
+  COMPLETED
+  REFUND_REQUESTED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  EXPIRED
+  REFUND_PENDING
+  REFUNDED
+}
+
+enum ReservationStatus {
+  HELD
+  CONFIRMED
+  RELEASED
+  EXPIRED
+}
+
+enum ScheduleStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum PaymentMethod {
+  SIMULATION_QRIS
+  SIMULATION_VA
+  SIMULATION_EWALLET
+  SIMULATION_CARD
+}
+
+enum RefundStatus {
+  PENDING
+  PROCESSED
+  REJECTED
+}
+
+enum DiscountType {
+  PERCENT
+  FIXED
+}
+
+model User {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  passwordHash String
+  role         Role           @default(CUSTOMER)
+  isActive     Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  profile      UserProfile?
+  bookings     Booking[]
+  notifications Notification[]
+  auditLogs    AuditLog[]
+}
+
+model UserProfile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName  String
+  phone     String?
+  address   String?
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BusOperator {
+  id          String        @id @default(cuid())
+  name        String
+  code        String        @unique
+  description String?
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  buses       Bus[]
+  schedules   BusSchedule[]
+}
+
+model Bus {
+  id          String      @id @default(cuid())
+  operatorId  String
+  operator    BusOperator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  name        String
+  plateNumber String?
+  capacity    Int         @default(40)
+  seatLayout  Json?
+  facilities  String[]
+  className   String
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  schedules   BusSchedule[]
+}
+
+model BusTerminal {
+  id               String      @id @default(cuid())
+  name             String
+  city             String
+  address          String?
+  isActive         Boolean     @default(true)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  routesFrom       BusRoute[]  @relation("OriginTerminal")
+  routesTo         BusRoute[]  @relation("DestinationTerminal")
+  schedulesFrom    BusSchedule[] @relation("DepartureTerminal")
+  schedulesTo      BusSchedule[] @relation("ArrivalTerminal")
+}
+
+model BusRoute {
+  id                    String      @id @default(cuid())
+  originTerminalId      String
+  destinationTerminalId String
+  originTerminal        BusTerminal @relation("OriginTerminal", fields: [originTerminalId], references: [id], onDelete: Cascade)
+  destinationTerminal   BusTerminal @relation("DestinationTerminal", fields: [destinationTerminalId], references: [id], onDelete: Cascade)
+  distanceKm            Int?
+  durationMinutes       Int
+  isActive              Boolean     @default(true)
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+  schedules             BusSchedule[]
+
+  @@unique([originTerminalId, destinationTerminalId])
+}
+
+model BusSchedule {
+  id                  String        @id @default(cuid())
+  operatorId          String
+  operator            BusOperator   @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  busId               String
+  bus                 Bus           @relation(fields: [busId], references: [id], onDelete: Cascade)
+  routeId             String
+  route               BusRoute      @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  departureTerminalId String
+  departureTerminal   BusTerminal   @relation("DepartureTerminal", fields: [departureTerminalId], references: [id])
+  arrivalTerminalId   String
+  arrivalTerminal     BusTerminal   @relation("ArrivalTerminal", fields: [arrivalTerminalId], references: [id])
+  departureTime       DateTime
+  arrivalTime         DateTime
+  price               Int
+  status              ScheduleStatus @default(ACTIVE)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  seats               BusSeat[]
+  bookings            Booking[]
+
+  @@index([routeId, departureTime])
+  @@index([operatorId])
+  @@index([status])
+}
+
+model BusSeat {
+  id         String      @id @default(cuid())
+  scheduleId String
+  schedule   BusSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  seatNumber String
+  isBooked   Boolean     @default(false)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@unique([scheduleId, seatNumber])
+}
+
+model TrainOperator {
+  id          String          @id @default(cuid())
+  name        String
+  code        String          @unique
+  isActive    Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  trains      Train[]
+  schedules   TrainSchedule[]
+}
+
+model TrainStation {
+  id               String          @id @default(cuid())
+  name             String
+  code             String          @unique
+  city             String
+  address          String?
+  isActive         Boolean         @default(true)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  routesFrom       TrainRoute[]    @relation("OriginStation")
+  routesTo         TrainRoute[]    @relation("DestinationStation")
+  schedulesFrom    TrainSchedule[] @relation("DepartureStation")
+  schedulesTo      TrainSchedule[] @relation("ArrivalStation")
+}
+
+model TrainRoute {
+  id                   String       @id @default(cuid())
+  originStationId      String
+  destinationStationId String
+  originStation        TrainStation @relation("OriginStation", fields: [originStationId], references: [id], onDelete: Cascade)
+  destinationStation   TrainStation @relation("DestinationStation", fields: [destinationStationId], references: [id], onDelete: Cascade)
+  distanceKm           Int?
+  durationMinutes      Int
+  isActive             Boolean      @default(true)
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+  schedules            TrainSchedule[]
+
+  @@unique([originStationId, destinationStationId])
+}
+
+model Train {
+  id          String        @id @default(cuid())
+  operatorId  String
+  operator    TrainOperator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  name        String
+  trainNumber String
+  className   String
+  capacity    Int           @default(64)
+  facilities  String[]
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  schedules   TrainSchedule[]
+}
+
+model TrainSchedule {
+  id                  String         @id @default(cuid())
+  operatorId          String
+  operator            TrainOperator  @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  trainId             String
+  train               Train          @relation(fields: [trainId], references: [id], onDelete: Cascade)
+  routeId             String
+  route               TrainRoute     @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  departureStationId  String
+  departureStation    TrainStation   @relation("DepartureStation", fields: [departureStationId], references: [id])
+  arrivalStationId    String
+  arrivalStation      TrainStation   @relation("ArrivalStation", fields: [arrivalStationId], references: [id])
+  departureTime       DateTime
+  arrivalTime         DateTime
+  price               Int
+  status              ScheduleStatus @default(ACTIVE)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  seats               TrainSeat[]
+  bookings            Booking[]
+
+  @@index([routeId, departureTime])
+  @@index([operatorId])
+  @@index([status])
+}
+
+model TrainSeat {
+  id         String        @id @default(cuid())
+  scheduleId String
+  schedule   TrainSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  seatNumber String
+  isBooked   Boolean       @default(false)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@unique([scheduleId, seatNumber])
+}
+
+model Passenger {
+  id         String   @id @default(cuid())
+  bookingId  String
+  booking    Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  fullName   String
+  idNumber   String?
+  phone      String
+  email      String
+  seatNumber String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Booking {
+  id              String            @id @default(cuid())
+  code            String            @unique
+  userId          String
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transportType   TransportType
+  busScheduleId   String?
+  busSchedule     BusSchedule?      @relation(fields: [busScheduleId], references: [id])
+  trainScheduleId String?
+  trainSchedule   TrainSchedule?    @relation(fields: [trainScheduleId], references: [id])
+  status          BookingStatus     @default(PENDING)
+  subtotal        Int
+  serviceFee      Int
+  discount        Int               @default(0)
+  total           Int
+  couponCode      String?
+  idempotencyKey  String?           @unique
+  expiresAt       DateTime?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  items           BookingItem[]
+  passengers      Passenger[]
+  payment         Payment?
+  reservations    SeatReservation[]
+  refunds         Refund[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model BookingItem {
+  id            String   @id @default(cuid())
+  bookingId     String
+  booking       Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  description   String
+  seatNumber    String
+  price         Int
+  passengerName String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model SeatReservation {
+  id            String            @id @default(cuid())
+  transportType TransportType
+  scheduleId    String
+  seatNumber    String
+  bookingId     String
+  booking       Booking           @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  status        ReservationStatus @default(HELD)
+  expiresAt     DateTime
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@unique([transportType, scheduleId, seatNumber])
+  @@index([expiresAt])
+}
+
+model Payment {
+  id                  String        @id @default(cuid())
+  bookingId           String        @unique
+  booking             Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  method              PaymentMethod
+  status              PaymentStatus @default(PENDING)
+  amount              Int
+  simulationScenario  String?
+  paidAt              DateTime?
+  transactionRef      String?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  refunds             Refund[]
+}
+
+model Refund {
+  id        String       @id @default(cuid())
+  bookingId String
+  booking   Booking      @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  paymentId String?
+  payment   Payment?     @relation(fields: [paymentId], references: [id])
+  amount    Int
+  reason    String?
+  status    RefundStatus @default(PENDING)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model Coupon {
+  id            String       @id @default(cuid())
+  code          String       @unique
+  description   String?
+  discountType  DiscountType
+  discountValue Int
+  minTransaction Int         @default(0)
+  maxDiscount   Int?
+  isActive      Boolean      @default(true)
+  expiresAt     DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  entity    String
+  entityId  String?
+  details   Json?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model SystemSetting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
