@@ -124,6 +124,25 @@ export default function AlgorithmLabPage() {
   const datasetMutation = useMutation({ mutationFn: labApi.dataset, onSuccess: setDataset, onError: err });
   const arrayMutation = useMutation({ mutationFn: labApi.array, onSuccess: setArrayData, onError: err });
   const sortMutation = useMutation({ mutationFn: () => labApi.sort(dataType, sortKey), onSuccess: setSortResult, onError: err });
+
+  // Value displayed on each sorted-result chip: the ACTIVE sort key, so the
+  // ordering is verifiable (previously chips always showed price, which made
+  // duration/label sorts look random).
+  const sortKeyValue = (it: any): string => {
+    switch (sortKey) {
+      case 'duration':
+        return `${it.durationMinutes} mnt`;
+      case 'departureMinutes': {
+        const h = String(Math.floor((it.departureMinutes ?? 0) / 60)).padStart(2, '0');
+        const m = String((it.departureMinutes ?? 0) % 60).padStart(2, '0');
+        return `${h}:${m}`;
+      }
+      case 'label':
+        return it.label ?? '';
+      default:
+        return formatIDR(it.price);
+    }
+  };
   const linearMutation = useMutation({ mutationFn: () => labApi.linear(dataType, linearQuery), onSuccess: setLinearResult, onError: err });
   const binaryMutation = useMutation({ mutationFn: () => labApi.binary(dataType, Number(binaryTarget)), onSuccess: setBinaryResult, onError: err });
   const pointerMutation = useMutation({ mutationFn: labApi.pointer, onSuccess: setPointerResult, onError: err });
@@ -206,7 +225,10 @@ export default function AlgorithmLabPage() {
             </div>
             <div className="flex flex-wrap gap-1.5 mt-3">
               {(sortResult.sorted ?? []).slice(0, 24).map((it: any, i: number) => (
-                <span key={i} className="rounded-md bg-primary/10 px-2 py-1 text-xs">{formatIDR(it.price)}</span>
+                <div key={i} className="rounded-md bg-primary/10 px-2 py-1 text-xs text-center">
+                  <div className="font-semibold">{sortKeyValue(it)}</div>
+                  <div className="max-w-[130px] truncate text-muted-foreground">{it.label} • {it.origin} → {it.destination}</div>
+                </div>
               ))}
             </div>
             <LogViewer title="Log Merge Sort" log={sortResult.log ?? []} />

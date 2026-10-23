@@ -256,14 +256,41 @@ export async function runCDemo(
 }
 
 /**
- * Generate stable numeric ID from CUID
+ * Generate stable numeric ID from a schedule id string.
+ * FNV-1a hash — the previous char-code sum collided easily, so different
+ * schedules shared the same numeric id in the lab's array visualization.
  */
-function stableNumericId(cuid: string): number {
-  let sum = 0;
-  for (let i = 0; i < cuid.length; i++) {
-    sum += cuid.charCodeAt(i);
+function stableNumericId(id: string): number {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < id.length; i++) {
+    h = Math.imul(h ^ id.charCodeAt(i), 0x01000193) >>> 0;
   }
-  return Math.abs(sum);
+  return 100 + (h % 9900);
+}
+
+/**
+ * Round-robin pick across groups so the lab sample covers every operator /
+ * train at least once before repeating any. The old "first 12 by departure
+ * time" sample silently excluded major operators (e.g. Sinar Jaya), which
+ * made Linear Search demos report "not found" for names that DO exist.
+ */
+function diversify<T>(rows: T[], keyOf: (row: T) => string, limit: number): T[] {
+  const groups = new Map<string, T[]>();
+  for (const row of rows) {
+    const key = keyOf(row);
+    const bucket = groups.get(key);
+    if (bucket) bucket.push(row);
+    else groups.set(key, [row]);
+  }
+  const queues = [...groups.values()];
+  const picked: T[] = [];
+  let cursor = 0;
+  while (picked.length < limit && queues.some((q) => q.length > 0)) {
+    const queue = queues[cursor % queues.length];
+    if (queue.length > 0) picked.push(queue.shift()!);
+    cursor++;
+  }
+  return picked;
 }
 
 /**
@@ -273,9 +300,9 @@ export async function getLabDataset(): Promise<{
   items: LabDatasetItem[];
   prices: number[];
 }> {
-  const [busSchedules, trainSchedules] = await Promise.all([
+  const [busPool, trainPool] = await Promise.all([
     prisma.busSchedule.findMany({
-      take: 12,
+      take: 400,
       include: {
         route: {
           include: {
@@ -288,7 +315,7 @@ export async function getLabDataset(): Promise<{
       orderBy: { departureTime: 'asc' },
     }),
     prisma.trainSchedule.findMany({
-      take: 12,
+      take: 400,
       include: {
         route: {
           include: {
@@ -305,6 +332,10 @@ export async function getLabDataset(): Promise<{
       orderBy: { departureTime: 'asc' },
     }),
   ]);
+
+  // Representative samples: every operator / train appears at least once.
+  const busSchedules = diversify(busPool, (s) => s.operator.name, 16);
+  const trainSchedules = diversify(trainPool, (s) => s.train.name, 12);
 
   const items: LabDatasetItem[] = [];
   const prices: number[] = [];
