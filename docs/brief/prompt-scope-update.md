@@ -1,20 +1,20 @@
-SCOPE UPDATE — JALANYUK 2026: BUS & TRAIN ONLY
+SCOPE UPDATE — AYORA 2026: BUS & TRAIN ONLY
 
-PENTING: Perbarui seluruh spesifikasi proyek JalanYuk sebelumnya. Website ini secara eksklusif menyediakan layanan pemesanan tiket BUS dan KERETA di Indonesia.
+PENTING: Perbarui seluruh spesifikasi proyek AYORA sebelumnya. Website ini secara eksklusif menyediakan layanan pemesanan tiket BUS dan KERETA di Indonesia.
 
 Jangan implementasikan fitur pemesanan pesawat, hotel, rental kendaraan, atau aktivitas wisata. Hapus seluruh navigasi, halaman, API, tabel database, kategori, filter, dan komponen UI yang hanya berkaitan dengan layanan tersebut.
 
 Pertahankan teknologi, sistem autentikasi, tema Light/Dark, customer dashboard, admin dashboard, keamanan, serta persyaratan Array, Pointer, Struct, Sorting, dan Searching dari spesifikasi sebelumnya.
 
-Gunakan nama brand JalanYuk di seluruh aplikasi, termasuk logo teks, title halaman, metadata, navbar, dashboard, email atau notifikasi, dokumentasi, dan seed data jika relevan.
+Gunakan nama brand AYORA di seluruh aplikasi, termasuk logo teks, title halaman, metadata, navbar, dashboard, email atau notifikasi, dokumentasi, dan seed data jika relevan.
 
 Tambahkan copyright berikut pada footer seluruh halaman publik dan halaman dashboard:
 
-© 2026 JalanYuk. All rights reserved.
+© 2026 AYORA. All rights reserved.
 
 1. PRODUCT SCOPE
 
-JalanYuk merupakan platform pemesanan tiket bus dan kereta antarkota dengan pengalaman pengguna modern, sederhana, aman, dan responsif.
+AYORA merupakan platform pemesanan tiket bus dan kereta antarkota dengan pengalaman pengguna modern, sederhana, aman, dan responsif.
 
 Kategori utama hanya:
 
@@ -33,8 +33,8 @@ Jika menggunakan data simulasi, tampilkan label Data Simulasi secara jelas pada 
 
 Buat homepage dengan:
 
-* Navbar JalanYuk.
-* Logo atau wordmark JalanYuk.
+* Navbar AYORA.
+* Logo atau wordmark AYORA.
 * Menu Beranda, Bus, Kereta, Pesanan Saya, dan Bantuan.
 * Login, Registrasi, Profil, dan toggle tema.
 * Hero section dengan headline seperti "Perjalanan Lebih Mudah, Tiket dalam Satu Genggaman".
@@ -44,7 +44,7 @@ Buat homepage dengan:
 * Rute kereta populer.
 * Promo tiket.
 * Keunggulan layanan.
-* Footer dengan bantuan, kebijakan, kontak, dan copyright © 2026 JalanYuk. All rights reserved.
+* Footer dengan bantuan, kebijakan, kontak, dan copyright © 2026 AYORA. All rights reserved.
 
 Gunakan foto transportasi darat, stasiun, terminal, dan destinasi Indonesia yang relevan.
 
@@ -174,7 +174,7 @@ Sediakan:
 * Notifikasi.
 * Bantuan.
 * Logout.
-* Footer atau bagian informasi dengan copyright © 2026 JalanYuk. All rights reserved.
+* Footer atau bagian informasi dengan copyright © 2026 AYORA. All rights reserved.
 
 Customer hanya dapat melihat pesanan miliknya sendiri.
 
@@ -184,7 +184,7 @@ Jangan tampilkan menu, tautan, tombol, atau akses menuju Algorithm Lab pada cust
 
 Admin memiliki akses operasional penuh sesuai otorisasi.
 
-Gunakan branding JalanYuk pada admin dashboard, termasuk judul halaman, sidebar, logo, metadata, dan footer.
+Gunakan branding AYORA pada admin dashboard, termasuk judul halaman, sidebar, logo, metadata, dan footer.
 
 Dashboard Overview
 
@@ -303,7 +303,7 @@ Tambahkan:
 
 Jangan menganggap ketersediaan tiket selalu sama dengan status kursi di frontend. Gunakan data backend sebagai sumber kebenaran.
 
-Gunakan nama JalanYuk pada seed data, konfigurasi platform, system settings, dan metadata aplikasi jika relevan.
+Gunakan nama AYORA pada seed data, konfigurasi platform, system settings, dan metadata aplikasi jika relevan.
 
 1. ARRAY, POINTER, STRUCT, SORTING & SEARCHING
 
@@ -435,20 +435,20 @@ Simpan parameter pencarian dalam query URL jika relevan agar halaman dapat di-re
 
 Route /admin/algorithm-lab harus berada di dalam layout admin dan tidak boleh terdaftar sebagai route publik atau route customer.
 
-Gunakan title dan metadata yang mencerminkan brand JalanYuk, misalnya:
+Gunakan title dan metadata yang mencerminkan brand AYORA, misalnya:
 
-* "JalanYuk — Pesan Tiket Bus dan Kereta"
-* "JalanYuk — Pencarian Tiket Bus"
-* "JalanYuk — Pencarian Tiket Kereta"
-* "JalanYuk Admin Dashboard"
-* "JalanYuk Algorithm Lab"
+* "AYORA — Pesan Tiket Bus dan Kereta"
+* "AYORA — Pencarian Tiket Bus"
+* "AYORA — Pencarian Tiket Kereta"
+* "AYORA Admin Dashboard"
+* "AYORA Algorithm Lab"
 
 1. ACCEPTANCE CRITERIA
 
 Website dianggap sesuai jika:
 
-1. Nama website di seluruh aplikasi adalah JalanYuk.
-2. Copyright © 2026 JalanYuk. All rights reserved. tampil pada footer yang relevan.
+1. Nama website di seluruh aplikasi adalah AYORA.
+2. Copyright © 2026 AYORA. All rights reserved. tampil pada footer yang relevan.
 3. Hanya memiliki layanan bus dan kereta.
 4. Tidak ada menu atau fitur pesawat, hotel, dan wisata.
 5. Customer dapat mencari dan memesan tiket menggunakan data yang tersedia.
@@ -472,13 +472,13 @@ Website dianggap sesuai jika:
 
 23. FINAL INSTRUCTION
 
-Periksa seluruh implementasi NexTrip sebelumnya dan lakukan penyesuaian menyeluruh terhadap scope bus dan kereta serta perubahan nama brand menjadi JalanYuk.
+Periksa seluruh implementasi NexTrip sebelumnya dan lakukan penyesuaian menyeluruh terhadap scope bus dan kereta serta perubahan nama brand menjadi AYORA.
 
 Hapus fitur yang tidak relevan, perbarui database, API, halaman, navigasi, dashboard, seed data, metadata, konfigurasi, dan dokumentasi.
 
-Ganti seluruh penyebutan NexTrip menjadi JalanYuk. Pastikan tidak ada teks, logo, title, route label, komentar dokumentasi, atau konfigurasi yang masih menggunakan nama NexTrip, kecuali pada catatan migrasi internal yang memang diperlukan.
+Ganti seluruh penyebutan NexTrip menjadi AYORA. Pastikan tidak ada teks, logo, title, route label, komentar dokumentasi, atau konfigurasi yang masih menggunakan nama NexTrip, kecuali pada catatan migrasi internal yang memang diperlukan.
 
-Tambahkan copyright © 2026 JalanYuk. All rights reserved. pada footer halaman publik dan area aplikasi yang relevan.
+Tambahkan copyright © 2026 AYORA. All rights reserved. pada footer halaman publik dan area aplikasi yang relevan.
 
 Pastikan seluruh alur customer, admin, booking, dan Algorithm Lab konsisten dengan layanan bus dan kereta. Algorithm Lab harus menjadi fitur internal khusus admin untuk memvisualisasikan Array, Pointer, Struct, Sorting, dan Searching. Jangan tampilkan atau berikan akses fitur tersebut kepada customer maupun pengguna publik.
 

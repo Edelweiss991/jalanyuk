@@ -4,7 +4,7 @@ export default function BusDetailPage() {
   return (
     <ScheduleDetailPage
       transportType="BUS"
-      title="JalanYuk — Detail Jadwal Bus"
+      title="AYORA — Detail Jadwal Bus"
     />
   );
 }

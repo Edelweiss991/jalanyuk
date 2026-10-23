@@ -89,9 +89,16 @@ function CityInput({ label, value, onChange, cities, placeholder }: CityInputPro
   );
 }
 
-export default function SearchWidget() {
+interface SearchWidgetProps {
+  /** Preselect the transport tab (e.g. on the /bus/search landing page). */
+  initialType?: 'BUS' | 'TRAIN';
+  /** Hide the Bus/Kereta toggle when the surrounding page fixes the type. */
+  lockType?: boolean;
+}
+
+export default function SearchWidget({ initialType = 'BUS', lockType = false }: SearchWidgetProps) {
   const navigate = useNavigate();
-  const [transportType, setTransportType] = useState<'BUS' | 'TRAIN'>('BUS');
+  const [transportType, setTransportType] = useState<'BUS' | 'TRAIN'>(initialType);
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
@@ -141,6 +148,7 @@ export default function SearchWidget() {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6">
       {/* Transport Type Toggle */}
+      {!lockType && (
       <div className="flex gap-2 mb-6">
         <button
           onClick={() => setTransportType('BUS')}
@@ -165,6 +173,7 @@ export default function SearchWidget() {
           Kereta
         </button>
       </div>
+      )}
 
       {/* Search Form */}
       <form onSubmit={handleSearch} className="space-y-4">

@@ -10,7 +10,7 @@ void swap_via_pointer(BusSchedule *a, BusSchedule *b) {
 }
 
 void run_pointer_demo(BusSchedule *arr, int n) {
-    printf("=== DEMO POINTER (Bahasa C) — JalanYuk ===\n");
+    printf("=== DEMO POINTER (Bahasa C) — AYORA ===\n");
     printf("Demonstrasi pointer arithmetic dan akses memori dalam bahasa C\n\n");
     
     // 1. Traversal array dengan pointer arithmetic

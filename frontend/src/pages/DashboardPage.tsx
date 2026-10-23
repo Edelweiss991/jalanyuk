@@ -368,7 +368,7 @@ export default function DashboardPage() {
 
           {/* Footer */}
           <div className="text-center text-sm text-gray-500 dark:text-gray-500 py-6">
-            © 2026 JalanYuk. All rights reserved.
+            © 2026 AYORA. All rights reserved.
           </div>
         </div>
       </div>

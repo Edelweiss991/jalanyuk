@@ -48,7 +48,7 @@ const SERVICE_FEE_PER_PASSENGER = 5000;
 // Keep these in sync with the backend or the displayed total will differ
 // from what the server actually charges.
 const COUPONS = [
-  { code: 'JALANYUK10', type: 'PERCENT' as const, value: 0.1, maxDiscount: 50000, minTransaction: 100000, description: 'Diskon 10% min. Rp100.000 (maks. Rp50.000)' },
+  { code: 'AYORA10', type: 'PERCENT' as const, value: 0.1, maxDiscount: 50000, minTransaction: 100000, description: 'Diskon 10% min. Rp100.000 (maks. Rp50.000)' },
   { code: 'HEMAT20', type: 'PERCENT' as const, value: 0.2, maxDiscount: 100000, minTransaction: 300000, description: 'Diskon 20% min. Rp300.000 (maks. Rp100.000)' },
   { code: 'NEWUSER', type: 'FIXED' as const, value: 25000, maxDiscount: null as number | null, minTransaction: 75000, description: 'Potongan Rp25.000 min. Rp75.000 untuk pengguna baru' },
 ];
@@ -575,7 +575,7 @@ export default function CheckoutPage() {
                       </div>
                     )}
                     <div className="mt-2 text-xs text-gray-500 dark:text-gray-500">
-                      Kode tersedia: JALANYUK10, HEMAT20, NEWUSER (validasi final di server)
+                      Kode tersedia: AYORA10, HEMAT20, NEWUSER (validasi final di server)
                     </div>
                   </div>
 

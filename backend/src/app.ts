@@ -45,7 +45,7 @@ export const createApp = () => {
       success: true,
       data: {
         status: 'ok',
-        service: 'JalanYuk API',
+        service: 'AYORA API',
         time: new Date().toISOString(),
       },
     });

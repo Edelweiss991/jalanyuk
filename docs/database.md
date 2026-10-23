@@ -1,4 +1,4 @@
-# Database JalanYuk
+# Database AYORA
 
 Engine: **PostgreSQL 16** melalui Prisma ORM (`backend/prisma/schema.prisma`). Provider pada schema adalah `postgresql` — inilah schema kanonis proyek; `docker-compose.yml` di root menyediakan instance PostgreSQL yang cocok untuk development/deployment standar.
 
@@ -41,6 +41,6 @@ cd backend
 npx prisma migrate dev     # menerapkan migration di prisma/migrations
 npm run prisma:seed        # menjalankan prisma/seed.ts
 ```
-Seed membuat: SystemSetting (`platform_name=JalanYuk`, `copyright="© 2026 JalanYuk. All rights reserved."`, `service_fee_per_passenger=5000`, tema, email dukungan), 3 kupon demo (JALANYUK10, HEMAT20, NEWUSER), operator/terminal/stasiun/rute bus & kereta Indonesia, jadwal untuk +1 s.d. +7 hari dari tanggal seed (50 bus, 40 kereta saat build), kursi per jadwal (bus 40, kereta 64; ±10% ditandai terisi secara deterministik), serta akun demo admin & customer (dari env `ADMIN_*`/`CUSTOMER_*`).
+Seed membuat: SystemSetting (`platform_name=AYORA`, `copyright="© 2026 AYORA. All rights reserved."`, `service_fee_per_passenger=5000`, tema, email dukungan), 3 kupon demo (AYORA10, HEMAT20, NEWUSER), operator/terminal/stasiun/rute bus & kereta Indonesia, jadwal untuk +1 s.d. +7 hari dari tanggal seed (50 bus, 40 kereta saat build), kursi per jadwal (bus 40, kereta 64; ±10% ditandai terisi secara deterministik), serta akun demo admin & customer (dari env `ADMIN_*`/`CUSTOMER_*`).
 
 Ketersediaan kursi yang ditampilkan = kursi tidak `isBooked` dikurangi reservasi aktif (HELD belum kedaluwarsa / CONFIRMED), dihitung dari database pada setiap permintaan — bukan dari state frontend.

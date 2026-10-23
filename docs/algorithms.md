@@ -1,4 +1,4 @@
-# Algoritma JalanYuk — Array, Pointer, Struct, Sorting, Searching
+# Algoritma AYORA — Array, Pointer, Struct, Sorting, Searching
 
 Seluruh fitur di dokumen ini hanya dapat diakses admin melalui **Algorithm Lab** (`/admin/algorithm-lab`, API `/api/algorithm-lab/*` dengan middleware role ADMIN di backend). Algoritma berjalan pada data jadwal bus/kereta nyata dari database — log yang ditampilkan adalah hasil eksekusi, bukan teks hardcoded.
 

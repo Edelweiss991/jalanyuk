@@ -27,7 +27,7 @@ export default function AdminLayout() {
     <div className="min-h-screen bg-background text-foreground flex">
       <aside className="hidden md:flex w-64 shrink-0 flex-col border-r bg-card">
         <div className="p-5 border-b">
-          <div className="text-xl font-bold text-primary">JalanYuk</div>
+          <div className="text-xl font-bold text-primary">AYORA</div>
           <div className="text-xs text-muted-foreground">Panel Admin • Data Simulasi</div>
         </div>
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
@@ -68,13 +68,13 @@ export default function AdminLayout() {
             </button>
             <ThemeToggle />
           </div>
-          <p className="text-[11px] text-muted-foreground">© 2026 JalanYuk. All rights reserved.</p>
+          <p className="text-[11px] text-muted-foreground">© 2026 AYORA. All rights reserved.</p>
         </div>
       </aside>
 
       <div className="flex-1 min-w-0">
         <header className="md:hidden flex items-center justify-between border-b bg-card px-4 py-3">
-          <span className="font-bold text-primary">JalanYuk Admin</span>
+          <span className="font-bold text-primary">AYORA Admin</span>
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <button onClick={() => { logout(); navigate('/login'); }} className="text-sm flex items-center gap-1">
@@ -101,7 +101,7 @@ export default function AdminLayout() {
           <Outlet />
         </main>
         <footer className="px-6 pb-6 text-center text-xs text-muted-foreground md:hidden">
-          © 2026 JalanYuk. All rights reserved.
+          © 2026 AYORA. All rights reserved.
         </footer>
       </div>
     </div>

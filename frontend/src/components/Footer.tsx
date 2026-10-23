@@ -77,7 +77,7 @@ export function Footer() {
         <div className="mt-8 border-t border-gray-200 pt-8 dark:border-gray-700">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              © 2026 JalanYuk. All rights reserved.
+              © 2026 AYORA. All rights reserved.
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-500">
               Data Simulasi — bukan layanan operator resmi

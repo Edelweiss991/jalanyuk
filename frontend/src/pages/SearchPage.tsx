@@ -4,6 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Filter, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { searchApi, TransportType } from '../services/api';
 import ScheduleCard from '../components/ScheduleCard';
+import SearchWidget from '../components/SearchWidget';
+import { Link } from 'react-router-dom';
 import { formatTime, formatDuration } from '../lib/format';
 
 interface SearchPageProps {
@@ -164,18 +166,25 @@ export default function SearchPage({ transportType, title }: SearchPageProps) {
   const classes: string[] = Array.from(new Set(schedules.map((s: any) => s.vehicle?.className).filter(Boolean)));
 
   if (!origin || !destination || !date) {
+    // Landing state (e.g. arriving from the Bus/Kereta navbar menu): show the
+    // search form right here, locked to this page's transport type. The old
+    // version only showed a button that navigated to '/bus' | '/kereta',
+    // which redirects straight back to this same page — a dead-end loop.
     return (
       <div className="container mx-auto px-4 py-8">
-        <div className="text-center">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            Silakan pilih rute dan tanggal perjalanan
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            Cari Tiket {transportType === 'BUS' ? 'Bus' : 'Kereta'}
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            Pilih kota asal, kota tujuan, dan tanggal keberangkatan untuk melihat jadwal yang tersedia.
           </p>
-          <button
-            onClick={() => navigate(transportType === 'BUS' ? '/bus' : '/kereta')}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
-          >
-            Kembali ke Pencarian
-          </button>
+          <SearchWidget initialType={transportType} lockType />
+          <p className="text-center mt-6">
+            <Link to="/" className="text-blue-600 dark:text-blue-400 hover:underline">
+              ← Kembali ke Beranda
+            </Link>
+          </p>
         </div>
       </div>
     );
@@ -201,7 +210,7 @@ export default function SearchPage({ transportType, title }: SearchPageProps) {
               </p>
             </div>
             <button
-              onClick={() => navigate(transportType === 'BUS' ? '/bus' : '/kereta')}
+              onClick={() => navigate(transportType === 'BUS' ? '/bus/search' : '/kereta/search')}
               className="text-blue-600 dark:text-blue-400 hover:underline"
             >
               Ubah Pencarian

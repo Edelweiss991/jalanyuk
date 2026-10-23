@@ -1,4 +1,4 @@
-# API JalanYuk
+# API AYORA
 
 Base URL default: `http://localhost:4000`. Semua respons mengikuti kontrak:
 
@@ -71,4 +71,4 @@ Tanpa token → **401**; token CUSTOMER → **403**; ADMIN → 200.
 | POST | `/export` | Body `{log[], format: json|csv}` → `{content, filename}` untuk diunduh. |
 
 ## Health
-`GET /api/health` → `{status: "ok", service: "JalanYuk API", time}`.
+`GET /api/health` → `{status: "ok", service: "AYORA API", time}`.

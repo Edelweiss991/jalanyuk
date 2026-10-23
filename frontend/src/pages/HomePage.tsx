@@ -18,7 +18,7 @@ function routeSearchUrl(type: 'bus' | 'kereta', route: string): string {
 
 export default function HomePage() {
   useEffect(() => {
-    document.title = 'JalanYuk — Tiket Bus & Kereta Antarkota';
+    document.title = 'AYORA — Tiket Bus & Kereta Antarkota';
   }, []);
 
   const { data: popularData } = useQuery({
@@ -45,12 +45,12 @@ export default function HomePage() {
       ];
 
   const cities = [
-    { name: 'Jakarta', gradient: 'from-blue-500 to-cyan-500' },
-    { name: 'Bandung', gradient: 'from-purple-500 to-pink-500' },
-    { name: 'Yogyakarta', gradient: 'from-orange-500 to-red-500' },
-    { name: 'Surabaya', gradient: 'from-green-500 to-teal-500' },
-    { name: 'Solo', gradient: 'from-yellow-500 to-orange-500' },
-    { name: 'Semarang', gradient: 'from-indigo-500 to-purple-500' },
+    { name: 'Jakarta', landmark: 'Monas', image: '/images/cities/jakarta.jpg' },
+    { name: 'Bandung', landmark: 'Gedung Sate', image: '/images/cities/bandung.jpg' },
+    { name: 'Yogyakarta', landmark: 'Tugu Yogyakarta', image: '/images/cities/yogyakarta.jpg' },
+    { name: 'Surabaya', landmark: 'Patung Suro & Boyo', image: '/images/cities/surabaya.jpg' },
+    { name: 'Solo', landmark: 'Keraton Surakarta', image: '/images/cities/solo.jpg' },
+    { name: 'Semarang', landmark: 'Lawang Sewu', image: '/images/cities/semarang.jpg' },
   ];
 
   const features = [
@@ -78,7 +78,7 @@ export default function HomePage() {
 
   const promos = [
     {
-      code: 'JALANYUK10',
+      code: 'AYORA10',
       discount: '10%',
       description: 'Diskon 10% untuk semua rute',
       minAmount: 'Min. Rp 100.000',
@@ -147,7 +147,7 @@ export default function HomePage() {
       <section className="py-16 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">
-            Keunggulan JalanYuk
+            Keunggulan AYORA
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
@@ -182,11 +182,20 @@ export default function HomePage() {
                 key={index}
                 className="group cursor-pointer"
               >
-                <div className={`aspect-square rounded-lg bg-gradient-to-br ${city.gradient} p-6 flex flex-col items-center justify-center text-white hover:scale-105 transition-transform`}>
-                  <MapPin className="w-8 h-8 mb-2" />
-                  <h3 className="text-lg font-semibold text-center">
-                    {city.name}
-                  </h3>
+                <div className="relative aspect-square rounded-lg overflow-hidden shadow-md hover:scale-105 transition-transform">
+                  <img
+                    src={city.image}
+                    alt={`${city.landmark}, ${city.name}`}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent p-4 pt-10">
+                    <h3 className="text-lg font-semibold text-white flex items-center gap-1.5">
+                      <MapPin className="w-4 h-4 flex-shrink-0" />
+                      {city.name}
+                    </h3>
+                    <p className="text-xs text-white/85">{city.landmark}</p>
+                  </div>
                 </div>
               </div>
             ))}
@@ -304,7 +313,7 @@ export default function HomePage() {
             Siap Memulai Perjalanan Anda?
           </h2>
           <p className="text-xl mb-8 text-blue-100">
-            Pesan tiket sekarang dan nikmati kemudahan perjalanan bersama JalanYuk
+            Pesan tiket sekarang dan nikmati kemudahan perjalanan bersama AYORA
           </p>
           <Link
             to="/bus"

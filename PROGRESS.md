@@ -1,4 +1,4 @@
-# PROGRESS — JalanYuk Build
+# PROGRESS — AYORA Build
 
 Update terakhir: 2026-10-23 (builder via Kiro kr/claude-sonnet-4.5 @ 9router)
 
@@ -27,7 +27,7 @@ Update terakhir: 2026-10-23 (builder via Kiro kr/claude-sonnet-4.5 @ 9router)
 - [x] Backend: include refunds ditambahkan pada detail booking admin (untuk tombol proses refund).
 - [x] Verifikasi final: backend tsc 0 error; frontend tsc 0 error; vite build OK; backend test 25/25 PASS; frontend test 5/5 PASS; C `make test` OK; health 200; admin bookings list/detail/settings/users smoke OK (bentuk {items, pagination} cocok dengan UI).
 - [x] grep nama brand lama: 0 hasil di kode aplikasi, docs proyek, seed, dan konfigurasi. Satu-satunya kemunculan adalah di docs/brief/*.md — salinan verbatim prompt user yang justru memerintahkan penghapusannya (disimpan sebagai dokumentasi spesifikasi sesuai instruksi langkah pertama).
-- [x] Footer "© 2026 JalanYuk. All rights reserved." terpasang di Footer publik/customer, DashboardPage, dan AdminLayout; juga tersimpan sebagai SystemSetting `copyright` dari seed.
+- [x] Footer "© 2026 AYORA. All rights reserved." terpasang di Footer publik/customer, DashboardPage, dan AdminLayout; juga tersimpan sebagai SystemSetting `copyright` dari seed.
 - Catatan deviasi final: (1) DB runtime lokal = PostgreSQL 16.9 portable (biner Zonky) karena PostgreSQL apt hilang saat image VM berganti — schema/migration tetap PostgreSQL murni, docker-compose disediakan; (2) @types/express dipin ke v4 (paket v5 dari scaffold awal tidak kompatibel dengan Express 4); (3) register mengembalikan token (auto-login) agar cocok dengan alur frontend; (4) Kiro API sempat 503 berkepanjangan di fase akhir — perbaikan & penulisan halaman admin tahap akhir dikerjakan manual lalu diverifikasi dengan toolchain yang sama.
 
 ## Perbaikan pasca-rilis (2026-10-23, oleh Jack saat menyiapkan screenshot iPad)

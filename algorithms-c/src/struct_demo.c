@@ -19,7 +19,7 @@ void print_schedule_by_pointer(TrainSchedule *s) {
 }
 
 void run_struct_demo(TrainSchedule *arr, int n) {
-    printf("=== DEMO STRUCT (Bahasa C) — JalanYuk ===\n");
+    printf("=== DEMO STRUCT (Bahasa C) — AYORA ===\n");
     printf("Demonstrasi penggunaan struct, akses field, dan array of struct\n\n");
     
     // 1. Akses field via operator titik pada variabel lokal

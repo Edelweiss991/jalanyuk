@@ -1,6 +1,6 @@
-# JalanYuk — Platform Pemesanan Tiket Bus & Kereta Antarkota
+# AYORA — Platform Pemesanan Tiket Bus & Kereta Antarkota
 
-**JalanYuk** adalah platform pemesanan tiket transportasi darat Indonesia untuk **bus antarkota** dan **kereta antarkota**. Dibangun sebagai aplikasi full-stack yang dapat dijalankan end-to-end: frontend React, backend Express, database PostgreSQL via Prisma, autentikasi JWT dengan RBAC, dashboard customer, dashboard admin, pembayaran simulasi, serta **Algorithm Lab khusus admin** (Array, Pointer & Struct bahasa C, Merge Sort, Linear Search, Binary Search dengan log eksekusi nyata).
+**AYORA** adalah platform pemesanan tiket transportasi darat Indonesia untuk **bus antarkota** dan **kereta antarkota**. Dibangun sebagai aplikasi full-stack yang dapat dijalankan end-to-end: frontend React, backend Express, database PostgreSQL via Prisma, autentikasi JWT dengan RBAC, dashboard customer, dashboard admin, pembayaran simulasi, serta **Algorithm Lab khusus admin** (Array, Pointer & Struct bahasa C, Merge Sort, Linear Search, Binary Search dengan log eksekusi nyata).
 
 > **Penting:** Seluruh jadwal, operator, tarif, dan pembayaran di aplikasi ini adalah **Data Simulasi** untuk keperluan demonstrasi/pembelajaran. Tidak ada integrasi operator, inventaris kursi nyata, atau payment gateway sungguhan. Label "Data Simulasi" dan "Pembayaran Simulasi" ditampilkan di aplikasi.
 
@@ -23,7 +23,7 @@ Deployment: frontend di Vercel (root directory `frontend`, env `VITE_API_URL` me
 - Homepage dengan search widget tab Bus/Kereta, rute & destinasi populer, promo.
 - Pencarian bus & kereta: filter operator, kelas, rentang harga, jam berangkat, fasilitas; 7 opsi sorting; pagination; parameter tersimpan di URL.
 - Detail jadwal + peta kursi interaktif (status AVAILABLE / HELD / BOOKED dari backend).
-- Checkout: data penumpang tervalidasi, kupon (JALANYUK10, HEMAT20, NEWUSER), harga **dihitung ulang di backend**, pembayaran simulasi (berhasil/gagal/kedaluwarsa).
+- Checkout: data penumpang tervalidasi, kupon (AYORA10, HEMAT20, NEWUSER), harga **dihitung ulang di backend**, pembayaran simulasi (berhasil/gagal/kedaluwarsa).
 - E-ticket dengan kode booking `JY-XXXXXXXX` setelah pembayaran berhasil.
 - Dashboard customer: profil, Pesanan Saya, detail & pembatalan (refund simulasi), perjalanan mendatang.
 - Tema Light/Dark (toggle, tersimpan di localStorage, mengikuti preferensi sistem saat pertama kali).
@@ -161,4 +161,4 @@ Hasil aktual saat build: **backend 25/25 lulus, frontend 5/5 lulus**; typecheck 
 
 ---
 
-© 2026 JalanYuk. All rights reserved.
+© 2026 AYORA. All rights reserved.

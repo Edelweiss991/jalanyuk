@@ -27,7 +27,7 @@ export function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 font-bold text-xl text-blue-600 dark:text-blue-400">
             <Bus className="w-6 h-6" />
-            <span>JalanYuk</span>
+            <span>AYORA</span>
           </Link>
 
           {/* Desktop Menu */}

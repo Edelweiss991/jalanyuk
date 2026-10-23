@@ -1,4 +1,4 @@
-# Deployment JalanYuk
+# Deployment AYORA
 
 ## Opsi A — Docker Compose (standar)
 `docker-compose.yml` di root proyek menyediakan PostgreSQL 16:

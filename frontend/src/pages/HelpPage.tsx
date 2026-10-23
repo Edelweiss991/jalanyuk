@@ -3,7 +3,7 @@ import { ChevronDown, ChevronUp, Mail } from 'lucide-react';
 
 export default function HelpPage() {
   useEffect(() => {
-    document.title = 'JalanYuk — Bantuan';
+    document.title = 'AYORA — Bantuan';
   }, []);
 
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -60,7 +60,7 @@ export default function HelpPage() {
             Pusat Bantuan
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Temukan jawaban untuk pertanyaan umum tentang JalanYuk
+            Temukan jawaban untuk pertanyaan umum tentang AYORA
           </p>
           <div className="inline-block bg-yellow-400 text-yellow-900 text-sm font-semibold px-3 py-1 rounded-full mt-4">
             Data Simulasi

@@ -1,6 +1,6 @@
-# JalanYuk Algorithms (C)
+# AYORA Algorithms (C)
 
-Modul algoritma dalam bahasa C untuk demonstrasi konsep pointer dan struct dalam konteks sistem booking transportasi JalanYuk.
+Modul algoritma dalam bahasa C untuk demonstrasi konsep pointer dan struct dalam konteks sistem booking transportasi AYORA.
 
 ## Konsep yang Didemonstrasikan
 

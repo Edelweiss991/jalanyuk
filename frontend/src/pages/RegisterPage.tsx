@@ -99,7 +99,7 @@ export default function RegisterPage() {
       // Auto-login after successful registration
       loginWithSession(response.token, response.user);
       
-      addToast('success', 'Registrasi berhasil! Selamat datang di JalanYuk.');
+      addToast('success', 'Registrasi berhasil! Selamat datang di AYORA.');
       navigate('/dashboard');
     } catch (error: any) {
       const message = error.message || 'Registrasi gagal. Silakan coba lagi.';
@@ -121,7 +121,7 @@ export default function RegisterPage() {
             </div>
           </div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Daftar di JalanYuk
+            Daftar di AYORA
           </h1>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
             Mulai perjalanan Anda bersama kami

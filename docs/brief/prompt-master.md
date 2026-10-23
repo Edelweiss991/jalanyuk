@@ -1,10 +1,10 @@
-PROJECT: JALANYUK — MODERN BUS & TRAIN BOOKING PLATFORM 2026
+PROJECT: AYORA — MODERN BUS & TRAIN BOOKING PLATFORM 2026
 
 1. ROLE & OBJECTIVE
 
 Bertindak sebagai Senior Full-Stack Developer, UI/UX Designer, Software Architect, Database Engineer, Security Engineer, dan QA Engineer.
 
-Bangun website pemesanan tiket transportasi darat bernama JalanYuk, yaitu platform modern untuk pemesanan tiket bus dan kereta antarkota di Indonesia.
+Bangun website pemesanan tiket transportasi darat bernama AYORA, yaitu platform modern untuk pemesanan tiket bus dan kereta antarkota di Indonesia.
 
 Website harus memiliki pengalaman pengguna modern, aman, responsif, mudah digunakan, dan relevan dengan kebutuhan tahun 2026.
 
@@ -12,7 +12,7 @@ Jangan hanya membuat prototype atau mockup statis. Implementasikan frontend, bac
 
 Semua tombol, formulir, filter, pencarian, sorting, navigasi, aksi CRUD, pemesanan, pemilihan kursi, pembayaran simulasi, dan fitur administrasi harus berfungsi sesuai perannya.
 
-Gunakan nama brand JalanYuk di seluruh aplikasi, termasuk:
+Gunakan nama brand AYORA di seluruh aplikasi, termasuk:
 
 * Logo teks.
 * Wordmark.
@@ -32,11 +32,11 @@ Jangan gunakan nama NexTrip di UI, metadata, dokumentasi, seed data, konfigurasi
 
 Tambahkan copyright berikut pada footer seluruh halaman publik dan halaman dashboard:
 
-© 2026 JalanYuk. All rights reserved.
+© 2026 AYORA. All rights reserved.
 
 2. PRODUCT SCOPE
 
-JalanYuk secara eksklusif menyediakan layanan pemesanan:
+AYORA secara eksklusif menyediakan layanan pemesanan:
 
 1. Tiket bus antarkota.
 2. Tiket kereta antarkota.
@@ -88,7 +88,7 @@ Gunakan versi dependency stabil yang kompatibel saat implementasi. Jika terdapat
 
 4. BRANDING & VISUAL DESIGN
 
-Nama platform: JalanYuk
+Nama platform: AYORA
 
 Tagline utama:
 
@@ -98,7 +98,7 @@ Alternatif tagline yang dapat digunakan pada bagian tertentu:
 
 * "Berangkat Nyaman, Sampai Tujuan."
 * "Pesan Tiket Bus dan Kereta dengan Mudah."
-* "Temukan Perjalananmu Bersama JalanYuk."
+* "Temukan Perjalananmu Bersama AYORA."
 
 Buat desain premium, modern, minimalis, profesional, dan berorientasi pada kenyamanan pengguna.
 
@@ -164,7 +164,7 @@ A. Homepage
 
 Buat homepage profesional dengan komponen berikut:
 
-* Navbar dengan logo atau wordmark JalanYuk.
+* Navbar dengan logo atau wordmark AYORA.
 * Menu Beranda.
 * Menu Bus.
 * Menu Kereta.
@@ -572,7 +572,7 @@ Buat dashboard customer dengan:
 * Logout.
 * Footer atau bagian informasi dengan copyright:
 
-© 2026 JalanYuk. All rights reserved.
+© 2026 AYORA. All rights reserved.
 
 Customer hanya dapat melihat dan mengelola data miliknya sendiri.
 
@@ -591,7 +591,7 @@ Jangan tampilkan:
 
 Admin memiliki akses operasional penuh sesuai otorisasi.
 
-Gunakan branding JalanYuk pada:
+Gunakan branding AYORA pada:
 
 * Admin dashboard.
 * Sidebar.
@@ -771,7 +771,7 @@ Sediakan:
 * Pengaturan biaya layanan.
 * Pengaturan tema default.
 * Pengaturan identitas platform.
-* Pengaturan nama brand JalanYuk.
+* Pengaturan nama brand AYORA.
 * Pengaturan copyright.
 
 Semua laporan harus dihitung berdasarkan data yang benar-benar tersimpan.
@@ -881,7 +881,7 @@ Tambahkan:
 
 Jangan menganggap ketersediaan tiket selalu sama dengan status kursi di frontend. Gunakan data backend sebagai sumber kebenaran.
 
-Gunakan nama JalanYuk pada:
+Gunakan nama AYORA pada:
 
 * Seed data.
 * Konfigurasi platform.
@@ -1316,17 +1316,17 @@ Simpan parameter pencarian dalam query URL jika relevan agar halaman dapat di-re
 
 Route /admin/algorithm-lab harus berada di dalam layout admin dan tidak boleh terdaftar sebagai route publik atau route customer.
 
-Gunakan title dan metadata yang mencerminkan brand JalanYuk, misalnya:
+Gunakan title dan metadata yang mencerminkan brand AYORA, misalnya:
 
-* "JalanYuk — Pesan Tiket Bus dan Kereta"
-* "JalanYuk — Pencarian Tiket Bus"
-* "JalanYuk — Pencarian Tiket Kereta"
-* "JalanYuk — Detail Tiket Bus"
-* "JalanYuk — Detail Tiket Kereta"
-* "JalanYuk — Checkout"
-* "JalanYuk — Pesanan Saya"
-* "JalanYuk Admin Dashboard"
-* "JalanYuk Algorithm Lab"
+* "AYORA — Pesan Tiket Bus dan Kereta"
+* "AYORA — Pencarian Tiket Bus"
+* "AYORA — Pencarian Tiket Kereta"
+* "AYORA — Detail Tiket Bus"
+* "AYORA — Detail Tiket Kereta"
+* "AYORA — Checkout"
+* "AYORA — Pesanan Saya"
+* "AYORA Admin Dashboard"
+* "AYORA Algorithm Lab"
 
 Jangan gunakan title atau metadata yang masih menyebut NexTrip.
 
@@ -1591,7 +1591,7 @@ Jangan menanamkan password asli atau kredensial sensitif di source code produksi
 
 Jika menyediakan akun demo, dokumentasikan cara membuat atau mengatur password melalui environment variable atau command CLI.
 
-Gunakan nama JalanYuk pada:
+Gunakan nama AYORA pada:
 
 * Nama platform.
 * System settings.
@@ -1661,7 +1661,7 @@ Buat dokumentasi lengkap yang mencakup:
 * Daftar environment variables.
 * Daftar keterbatasan integrasi eksternal.
 
-Pastikan seluruh dokumentasi menggunakan nama JalanYuk.
+Pastikan seluruh dokumentasi menggunakan nama AYORA.
 
 Jangan meninggalkan dokumentasi yang masih menggunakan nama NexTrip.
 
@@ -1793,11 +1793,11 @@ Lakukan pencarian menyeluruh pada seluruh repository untuk memastikan:
 * Tidak ada nama brand lama pada email template.
 * Tidak ada nama brand lama pada konfigurasi.
 
-Ganti seluruh penyebutan NexTrip menjadi JalanYuk.
+Ganti seluruh penyebutan NexTrip menjadi AYORA.
 
 Tambahkan copyright:
 
-© 2026 JalanYuk. All rights reserved.
+© 2026 AYORA. All rights reserved.
 
 pada footer halaman publik dan area aplikasi yang relevan.
 
@@ -1805,8 +1805,8 @@ pada footer halaman publik dan area aplikasi yang relevan.
 
 Website dianggap sesuai jika:
 
-1. Nama website di seluruh aplikasi adalah JalanYuk.
-2. Copyright © 2026 JalanYuk. All rights reserved. tampil pada footer yang relevan.
+1. Nama website di seluruh aplikasi adalah AYORA.
+2. Copyright © 2026 AYORA. All rights reserved. tampil pada footer yang relevan.
 3. Hanya memiliki layanan bus dan kereta.
 4. Tidak ada menu atau fitur pesawat, hotel, rental kendaraan, atau wisata.
 5. Customer dapat mencari tiket bus.
@@ -1875,7 +1875,7 @@ Jika proyek sudah memiliki struktur atau implementasi, analisis terlebih dahulu 
 Periksa seluruh implementasi sebelumnya dan lakukan penyesuaian menyeluruh terhadap:
 
 * Scope bus dan kereta.
-* Perubahan nama brand menjadi JalanYuk.
+* Perubahan nama brand menjadi AYORA.
 * Penghapusan fitur pesawat, hotel, rental kendaraan, dan wisata.
 * Penambahan copyright.
 * Pembatasan Algorithm Lab hanya untuk admin.
@@ -1890,13 +1890,13 @@ Periksa seluruh implementasi sebelumnya dan lakukan penyesuaian menyeluruh terha
 * Pembaruan konfigurasi.
 * Pembaruan dokumentasi.
 
-Ganti seluruh penyebutan NexTrip menjadi JalanYuk.
+Ganti seluruh penyebutan NexTrip menjadi AYORA.
 
 Pastikan tidak ada teks, logo, title, route label, komentar dokumentasi, seed data, atau konfigurasi yang masih menggunakan nama NexTrip, kecuali pada catatan migrasi internal yang memang diperlukan.
 
 Tambahkan copyright:
 
-© 2026 JalanYuk. All rights reserved.
+© 2026 AYORA. All rights reserved.
 
 pada footer halaman publik dan area aplikasi yang relevan.
 
@@ -1943,7 +1943,7 @@ Di akhir pekerjaan, tampilkan:
 * Daftar environment variables.
 * Fitur yang masih membutuhkan integrasi eksternal.
 * Konfirmasi bahwa tidak ada branding NexTrip yang tersisa.
-* Konfirmasi bahwa copyright JalanYuk telah ditambahkan.
+* Konfirmasi bahwa copyright AYORA telah ditambahkan.
 * Konfirmasi bahwa Algorithm Lab hanya dapat diakses admin.
 
 Mulai implementasi sekarang dan teruskan sampai acceptance criteria yang dapat dikerjakan dalam environment ini terpenuhi.

@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 /**
- * Seed script for JalanYuk platform (Development Mode)
+ * Seed script for AYORA platform (Development Mode)
  * 
  * WARNING: This seed script deletes existing schedules, seats and ALL demo
  * booking data (bookings, payments, reservations) to ensure fresh,
@@ -53,7 +53,7 @@ function isDeterministicBooked(seatIndex: number, scheduleIndex: number): boolea
 }
 
 async function main() {
-  console.log('🌱 Starting JalanYuk seed (Development)...');
+  console.log('🌱 Starting AYORA seed (Development)...');
   
   // STEP 0: Clean up schedules and seats from previous seed
   console.log('🧹 Cleaning previous schedules and seats...');
@@ -67,19 +67,22 @@ async function main() {
   await prisma.busSeat.deleteMany({});
   await prisma.trainSchedule.deleteMany({});
   await prisma.busSchedule.deleteMany({});
+  // Legacy coupon from before the AYORA rebrand (bookings were wiped above,
+  // and Booking.couponCode is a plain string, so removing it is safe).
+  await prisma.coupon.deleteMany({ where: { code: 'JALANYUK10' } });
   console.log('✅ Previous schedules and seats cleared');
 
   // STEP 1: System Settings
   console.log('⚙️  Creating system settings...');
   await prisma.systemSetting.upsert({
     where: { key: 'platform_name' },
-    update: {},
-    create: { key: 'platform_name', value: 'JalanYuk', description: 'Nama platform' }
+    update: { value: 'AYORA' },
+    create: { key: 'platform_name', value: 'AYORA', description: 'Nama platform' }
   });
   await prisma.systemSetting.upsert({
     where: { key: 'copyright' },
-    update: {},
-    create: { key: 'copyright', value: '© 2026 JalanYuk. All rights reserved.', description: 'Footer copyright' }
+    update: { value: '© 2026 AYORA. All rights reserved.' },
+    create: { key: 'copyright', value: '© 2026 AYORA. All rights reserved.', description: 'Footer copyright' }
   });
   await prisma.systemSetting.upsert({
     where: { key: 'service_fee_per_passenger' },
@@ -93,17 +96,17 @@ async function main() {
   });
   await prisma.systemSetting.upsert({
     where: { key: 'support_email' },
-    update: {},
-    create: { key: 'support_email', value: 'support@jalanyuk.id', description: 'Email dukungan pelanggan' }
+    update: { value: 'support@ayora.id' },
+    create: { key: 'support_email', value: 'support@ayora.id', description: 'Email dukungan pelanggan' }
   });
 
   // STEP 2: Coupons
   console.log('🎟️  Creating coupons...');
   await prisma.coupon.upsert({
-    where: { code: 'JALANYUK10' },
+    where: { code: 'AYORA10' },
     update: {},
     create: {
-      code: 'JALANYUK10',
+      code: 'AYORA10',
       description: 'Diskon 10% untuk transaksi minimal 100rb (maks diskon 50rb)',
       discountType: 'PERCENT',
       discountValue: 10,
@@ -161,10 +164,10 @@ async function main() {
 
   await prisma.userProfile.upsert({
     where: { userId: adminUser.id },
-    update: {},
+    update: { fullName: 'Administrator AYORA' },
     create: {
       userId: adminUser.id,
-      fullName: 'Administrator JalanYuk',
+      fullName: 'Administrator AYORA',
       phone: '081234567890'
     }
   });
@@ -288,6 +291,23 @@ async function main() {
     { id: 'terminal-mtr', name: 'Terminal Mandalika', city: 'Mataram', address: 'Jl. Raya Mataram, Lombok Barat' },
     { id: 'terminal-sbw', name: 'Terminal Sumbawa Besar', city: 'Sumbawa Besar', address: 'Jl. Lintas Sumbawa, Sumbawa' },
     { id: 'terminal-bim', name: 'Terminal Dara', city: 'Bima', address: 'Jl. Sultan Salahuddin, Bima' },
+    { id: 'terminal-clc', name: 'Terminal Bangga Mbangun Desa', city: 'Cilacap', address: 'Jl. Gatot Subroto, Cilacap' },
+    { id: 'terminal-bjn', name: 'Terminal Rajekwesi', city: 'Bojonegoro', address: 'Jl. Veteran, Bojonegoro' },
+    { id: 'terminal-skb', name: 'Terminal Lembursitu', city: 'Sukabumi', address: 'Jl. KH Ahmad Sanusi, Sukabumi' },
+    { id: 'terminal-tsm', name: 'Terminal Indihiang', city: 'Tasikmalaya', address: 'Jl. Ibrahim Adjie, Tasikmalaya' },
+    { id: 'terminal-mgl', name: 'Terminal Tidar', city: 'Magelang', address: 'Jl. Sukarno-Hatta, Magelang' },
+    { id: 'terminal-kds', name: 'Terminal Jati', city: 'Kudus', address: 'Jl. Raya Kudus, Kudus' },
+    { id: 'terminal-pkl', name: 'Terminal Pekalongan', city: 'Pekalongan', address: 'Jl. Dr. Sutomo, Pekalongan' },
+    { id: 'terminal-mjk', name: 'Terminal Kertajaya', city: 'Mojokerto', address: 'Jl. Raya Mojokerto, Mojokerto' },
+    { id: 'terminal-psr', name: 'Terminal Untung Suropati', city: 'Pasuruan', address: 'Jl. Untung Suropati, Pasuruan' },
+    { id: 'terminal-tbn', name: 'Terminal Kambang Putih', city: 'Tuban', address: 'Jl. Raya Tuban, Tuban' },
+    { id: 'terminal-slt', name: 'Terminal Tingkir', city: 'Salatiga', address: 'Jl. Tingkir Raya, Salatiga' },
+    { id: 'terminal-wsb', name: 'Terminal Mendolo', city: 'Wonosobo', address: 'Jl. Raya Wonosobo, Wonosobo' },
+    { id: 'terminal-kbm', name: 'Terminal Kebumen', city: 'Kebumen', address: 'Jl. Pahlawan, Kebumen' },
+    { id: 'terminal-pnr', name: 'Terminal Seloaji', city: 'Ponorogo', address: 'Jl. Raya Ponorogo, Ponorogo' },
+    { id: 'terminal-pct', name: 'Terminal Pacitan', city: 'Pacitan', address: 'Jl. Gatot Subroto, Pacitan' },
+    { id: 'terminal-grt', name: 'Terminal Guntur', city: 'Garut', address: 'Jl. Guntur, Garut' },
+    { id: 'terminal-cjr', name: 'Terminal Pasirhayam', city: 'Cianjur', address: 'Jl. Pasirhayam, Cianjur' },
   ];
   const terminalById: Record<string, any> = {};
   for (const t of terminalsData) {
@@ -339,6 +359,73 @@ async function main() {
     { id: 'route-bus-dps-mtr', from: 'terminal-dps', to: 'terminal-mtr', km: 180, min: 330, bus: 'bus-tm-1', tier: 'thin' },
     { id: 'route-bus-mtr-sbw', from: 'terminal-mtr', to: 'terminal-sbw', km: 190, min: 300, bus: 'bus-tm-1', tier: 'thin' },
     { id: 'route-bus-mtr-bim', from: 'terminal-mtr', to: 'terminal-bim', km: 280, min: 480, bus: 'bus-tm-1', tier: 'thin' },
+    { id: 'route-bus-bgr-clc', from: 'terminal-bgr', to: 'terminal-clc', km: 300, min: 450, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-clc-bgr', from: 'terminal-clc', to: 'terminal-bgr', km: 300, min: 450, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-bjn-jkt', from: 'terminal-bjn', to: 'terminal-pg', km: 620, min: 600, bus: 'bus-ph-1', tier: 'regular' },
+    { id: 'route-bus-jkt-bjn', from: 'terminal-pg', to: 'terminal-bjn', km: 620, min: 600, bus: 'bus-ph-1', tier: 'regular' },
+    { id: 'route-bus-bdg-sby-2', from: 'terminal-lp', to: 'terminal-br', km: 700, min: 690, bus: 'bus-lr-1', tier: 'trunk' },
+    { id: 'route-bus-sby-bdg', from: 'terminal-br', to: 'terminal-lp', km: 700, min: 660, bus: 'bus-gh-1', tier: 'trunk' },
+    { id: 'route-bus-jkt-clc', from: 'terminal-kr', to: 'terminal-clc', km: 390, min: 480, bus: 'bus-sj-2', tier: 'regular' },
+    { id: 'route-bus-clc-jkt', from: 'terminal-clc', to: 'terminal-kr', km: 390, min: 480, bus: 'bus-sj-2', tier: 'regular' },
+    { id: 'route-bus-jkt-kds', from: 'terminal-pg', to: 'terminal-kds', km: 520, min: 480, bus: 'bus-ph-1', tier: 'regular' },
+    { id: 'route-bus-kds-jkt', from: 'terminal-kds', to: 'terminal-pg', km: 520, min: 480, bus: 'bus-ph-1', tier: 'regular' },
+    { id: 'route-bus-jkt-tsm', from: 'terminal-kr', to: 'terminal-tsm', km: 260, min: 330, bus: 'bus-lr-1', tier: 'regular' },
+    { id: 'route-bus-tsm-jkt', from: 'terminal-tsm', to: 'terminal-kr', km: 260, min: 330, bus: 'bus-lr-1', tier: 'regular' },
+    { id: 'route-bus-bdg-clc', from: 'terminal-lp', to: 'terminal-clc', km: 295, min: 390, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-clc-bdg', from: 'terminal-clc', to: 'terminal-lp', km: 295, min: 390, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-bdg-tsm', from: 'terminal-lp', to: 'terminal-tsm', km: 110, min: 160, bus: 'bus-dm-1', tier: 'regular' },
+    { id: 'route-bus-tsm-bdg', from: 'terminal-tsm', to: 'terminal-lp', km: 110, min: 160, bus: 'bus-dm-1', tier: 'regular' },
+    { id: 'route-bus-bgr-bdg', from: 'terminal-bgr', to: 'terminal-lp', km: 125, min: 200, bus: 'bus-dm-1', tier: 'regular' },
+    { id: 'route-bus-bdg-bgr', from: 'terminal-lp', to: 'terminal-bgr', km: 125, min: 200, bus: 'bus-dm-1', tier: 'regular' },
+    { id: 'route-bus-smg-bjn', from: 'terminal-smg', to: 'terminal-bjn', km: 175, min: 210, bus: 'bus-ph-1', tier: 'regular' },
+    { id: 'route-bus-bjn-smg', from: 'terminal-bjn', to: 'terminal-smg', km: 175, min: 210, bus: 'bus-ph-1', tier: 'regular' },
+    { id: 'route-bus-bjn-sby', from: 'terminal-bjn', to: 'terminal-br', km: 110, min: 140, bus: 'bus-sj-2', tier: 'regular' },
+    { id: 'route-bus-sby-bjn', from: 'terminal-br', to: 'terminal-bjn', km: 110, min: 140, bus: 'bus-sj-2', tier: 'regular' },
+    { id: 'route-bus-smg-kds', from: 'terminal-smg', to: 'terminal-kds', km: 55, min: 80, bus: 'bus-ph-1', tier: 'thin' },
+    { id: 'route-bus-smg-mgl', from: 'terminal-smg', to: 'terminal-mgl', km: 80, min: 130, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-yog-mgl', from: 'terminal-yog', to: 'terminal-mgl', km: 45, min: 80, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-yog-clc', from: 'terminal-yog', to: 'terminal-clc', km: 215, min: 300, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-clc-yog', from: 'terminal-clc', to: 'terminal-yog', km: 215, min: 300, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-pwt-clc', from: 'terminal-pwt', to: 'terminal-clc', km: 60, min: 95, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-clc-pwt', from: 'terminal-clc', to: 'terminal-pwt', km: 60, min: 95, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-jkt-skb', from: 'terminal-kr', to: 'terminal-skb', km: 120, min: 210, bus: 'bus-dm-1', tier: 'regular' },
+    { id: 'route-bus-bgr-skb', from: 'terminal-bgr', to: 'terminal-skb', km: 62, min: 120, bus: 'bus-dm-1', tier: 'thin' },
+    { id: 'route-bus-jkt-grt', from: 'terminal-kr', to: 'terminal-grt', km: 195, min: 270, bus: 'bus-lr-1', tier: 'regular' },
+    { id: 'route-bus-bdg-grt', from: 'terminal-lp', to: 'terminal-grt', km: 72, min: 130, bus: 'bus-dm-1', tier: 'regular' },
+    { id: 'route-bus-cbn-tsm', from: 'terminal-cbn', to: 'terminal-tsm', km: 155, min: 220, bus: 'bus-ef-1', tier: 'thin' },
+    { id: 'route-bus-cbn-clc', from: 'terminal-cbn', to: 'terminal-clc', km: 195, min: 280, bus: 'bus-ef-1', tier: 'thin' },
+    { id: 'route-bus-teg-pwt', from: 'terminal-teg', to: 'terminal-pwt', km: 115, min: 160, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-jkt-wsb', from: 'terminal-pg', to: 'terminal-wsb', km: 470, min: 540, bus: 'bus-sj-2', tier: 'regular' },
+    { id: 'route-bus-pwt-wsb', from: 'terminal-pwt', to: 'terminal-wsb', km: 85, min: 160, bus: 'bus-ef-1', tier: 'thin' },
+    { id: 'route-bus-yog-kbm', from: 'terminal-yog', to: 'terminal-kbm', km: 115, min: 160, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-kbm-pwt', from: 'terminal-kbm', to: 'terminal-pwt', km: 48, min: 70, bus: 'bus-ef-1', tier: 'thin' },
+    { id: 'route-bus-solo-mgl', from: 'terminal-tn', to: 'terminal-mgl', km: 100, min: 160, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-solo-pct', from: 'terminal-tn', to: 'terminal-pct', km: 115, min: 190, bus: 'bus-gh-1', tier: 'thin' },
+    { id: 'route-bus-mdn-pnr', from: 'terminal-mdn', to: 'terminal-pnr', km: 32, min: 60, bus: 'bus-stj-1', tier: 'thin' },
+    { id: 'route-bus-sby-psr', from: 'terminal-br', to: 'terminal-psr', km: 62, min: 90, bus: 'bus-dm-1', tier: 'regular' },
+    { id: 'route-bus-sby-mjk', from: 'terminal-br', to: 'terminal-mjk', km: 56, min: 80, bus: 'bus-sj-2', tier: 'regular' },
+    { id: 'route-bus-sby-tbn', from: 'terminal-br', to: 'terminal-tbn', km: 112, min: 160, bus: 'bus-ph-1', tier: 'regular' },
+    { id: 'route-bus-smg-slt', from: 'terminal-smg', to: 'terminal-slt', km: 52, min: 75, bus: 'bus-ef-1', tier: 'thin' },
+    { id: 'route-bus-solo-slt', from: 'terminal-tn', to: 'terminal-slt', km: 50, min: 80, bus: 'bus-ef-1', tier: 'thin' },
+    { id: 'route-bus-jkt-cjr', from: 'terminal-kr', to: 'terminal-cjr', km: 95, min: 170, bus: 'bus-dm-1', tier: 'thin' },
+    { id: 'route-bus-solo-jkt', from: 'terminal-tn', to: 'terminal-pg', km: 580, min: 540, bus: 'bus-stj-1', tier: 'trunk' },
+    { id: 'route-bus-sby-smg', from: 'terminal-br', to: 'terminal-smg', km: 350, min: 330, bus: 'bus-ph-1', tier: 'regular' },
+    { id: 'route-bus-yog-bdg', from: 'terminal-yog', to: 'terminal-lp', km: 420, min: 420, bus: 'bus-lr-1', tier: 'regular' },
+    { id: 'route-bus-smg-bdg', from: 'terminal-smg', to: 'terminal-lp', km: 360, min: 360, bus: 'bus-kd-1', tier: 'regular' },
+    { id: 'route-bus-cbn-jkt', from: 'terminal-cbn', to: 'terminal-kr', km: 220, min: 240, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-pwt-jkt', from: 'terminal-pwt', to: 'terminal-kr', km: 350, min: 330, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-yog-smg', from: 'terminal-yog', to: 'terminal-smg', km: 130, min: 150, bus: 'bus-ef-1', tier: 'regular' },
+    { id: 'route-bus-mlg-yog', from: 'terminal-mlg', to: 'terminal-yog', km: 400, min: 420, bus: 'bus-sdr-1', tier: 'regular' },
+    { id: 'route-bus-bwi-sby', from: 'terminal-bwi', to: 'terminal-br', km: 290, min: 330, bus: 'bus-dm-1', tier: 'regular' },
+    { id: 'route-bus-mlg-sby', from: 'terminal-mlg', to: 'terminal-br', km: 100, min: 150, bus: 'bus-sj-2', tier: 'regular' },
+    { id: 'route-bus-dps-bwi', from: 'terminal-dps', to: 'terminal-bwi', km: 130, min: 270, bus: 'bus-pk-1', tier: 'regular' },
+    { id: 'route-bus-dps-mlg', from: 'terminal-dps', to: 'terminal-mlg', km: 400, min: 540, bus: 'bus-mt-1', tier: 'regular' },
+    { id: 'route-bus-mlg-bdg', from: 'terminal-mlg', to: 'terminal-lp', km: 650, min: 660, bus: 'bus-lr-1', tier: 'regular' },
+    { id: 'route-bus-dps-solo', from: 'terminal-dps', to: 'terminal-tn', km: 620, min: 720, bus: 'bus-ri-2', tier: 'regular' },
+    { id: 'route-bus-sbw-mtr', from: 'terminal-sbw', to: 'terminal-mtr', km: 190, min: 300, bus: 'bus-tm-1', tier: 'thin' },
+    { id: 'route-bus-bim-mtr', from: 'terminal-bim', to: 'terminal-mtr', km: 280, min: 480, bus: 'bus-tm-1', tier: 'thin' },
+    { id: 'route-bus-mtr-dps', from: 'terminal-mtr', to: 'terminal-dps', km: 180, min: 330, bus: 'bus-tm-1', tier: 'thin' },
+    { id: 'route-bus-mtr-sby', from: 'terminal-mtr', to: 'terminal-br', km: 650, min: 900, bus: 'bus-tm-1', tier: 'thin' },
   ];
   const busRouteById: Record<string, any> = {};
   for (const r of busRoutesData) {
@@ -395,6 +482,10 @@ async function main() {
     { code: 'PB', name: 'Probolinggo', city: 'Probolinggo', address: 'Jl. KH Mas Mansyur, Probolinggo' },
     { code: 'JR', name: 'Jember', city: 'Jember', address: 'Jl. Wijaya Kusuma, Jember' },
     { code: 'KTG', name: 'Ketapang', city: 'Banyuwangi', address: 'Jl. Gatot Subroto, Banyuwangi' },
+    { code: 'BJN', name: 'Bojonegoro', city: 'Bojonegoro', address: 'Jl. Gajah Mada, Bojonegoro' },
+    { code: 'CCL', name: 'Cepu', city: 'Blora', address: 'Jl. Stasiun, Cepu' },
+    { code: 'MR', name: 'Mojokerto', city: 'Mojokerto', address: 'Jl. Bhayangkara, Mojokerto' },
+    { code: 'GR', name: 'Garut', city: 'Garut', address: 'Jl. Mawar, Garut' },
   ];
   const stationByCode: Record<string, any> = {};
   for (const s of stationsData) {
@@ -441,6 +532,10 @@ async function main() {
     { id: 'train-probowangi-1', name: 'Probowangi (Simulasi)', number: 'KA 314', className: 'Ekonomi', facilities: TRAIN_FAC_ECO },
     { id: 'train-mutiara-1', name: 'Mutiara Timur (Simulasi)', number: 'KA 210', className: 'Eksekutif', facilities: TRAIN_FAC_EXEC },
     { id: 'train-tawangalun-1', name: 'Tawang Alun (Simulasi)', number: 'KA 316', className: 'Ekonomi', facilities: TRAIN_FAC_ECO },
+    { id: 'train-serayu-1', name: 'Serayu (Simulasi)', number: 'KA 254', className: 'Ekonomi', facilities: TRAIN_FAC_ECO },
+    { id: 'train-penataran-1', name: 'Penataran (Simulasi)', number: 'KA 289', className: 'Ekonomi Premium', facilities: TRAIN_FAC_PREMIUM },
+    { id: 'train-cikuray-1', name: 'Cikuray (Simulasi)', number: 'KA 268', className: 'Ekonomi Premium', facilities: TRAIN_FAC_PREMIUM },
+    { id: 'train-dhoho-1', name: 'Dhoho (Simulasi)', number: 'KA 353', className: 'Ekonomi', facilities: TRAIN_FAC_ECO },
   ];
   const trainById: Record<string, any> = {};
   for (const t of trainsData) {
@@ -497,6 +592,41 @@ async function main() {
     { id: 'route-train-sgu-ktg-probowangi', from: 'SGU', to: 'KTG', km: 300, min: 270, train: 'train-probowangi-1', price: 105000, times: ['07:25'] },
     { id: 'route-train-sgu-ktg-mutiara', from: 'SGU', to: 'KTG', km: 300, min: 240, train: 'train-mutiara-1', price: 190000, times: ['09:35'] },
     { id: 'route-train-ml-ktg-tawangalun', from: 'ML', to: 'KTG', km: 320, min: 330, train: 'train-tawangalun-1', price: 95000, times: ['16:05'] },
+    { id: 'route-train-pse-kya-serayu', from: 'PSE', to: 'KYA', km: 390, min: 480, train: 'train-serayu-1', price: 125000, times: ['07:30'] },
+    { id: 'route-train-pse-pwt-serayu', from: 'PSE', to: 'PWT', km: 360, min: 450, train: 'train-serayu-1', price: 140000, times: ['07:30', '21:15'] },
+    { id: 'route-train-bd-kya-serayu', from: 'BD', to: 'KYA', km: 270, min: 330, train: 'train-serayu-1', price: 110000, times: ['09:40'] },
+    { id: 'route-train-tsm-kya-serayu', from: 'TSM', to: 'KYA', km: 170, min: 210, train: 'train-serayu-1', price: 75000, times: ['11:05'] },
+    { id: 'route-train-pwt-kya-logawa', from: 'PWT', to: 'KYA', km: 30, min: 40, train: 'train-logawa-1', price: 30000, times: ['05:50'] },
+    { id: 'route-train-kya-jr-logawa', from: 'KYA', to: 'JR', km: 550, min: 570, train: 'train-logawa-1', price: 150000, times: ['06:15'] },
+    { id: 'route-train-pwt-ktj-logawa', from: 'PWT', to: 'KTJ', km: 105, min: 100, train: 'train-logawa-1', price: 55000, times: ['05:35'] },
+    { id: 'route-train-ktj-jr-logawa', from: 'KTJ', to: 'JR', km: 480, min: 500, train: 'train-logawa-1', price: 160000, times: ['07:15'] },
+    { id: 'route-train-pse-bjn-airlangga', from: 'PSE', to: 'BJN', km: 660, min: 570, train: 'train-airlangga-1', price: 90000, times: ['11:15'] },
+    { id: 'route-train-bjn-pse-kertajaya', from: 'BJN', to: 'PSE', km: 660, min: 600, train: 'train-kertajaya-1', price: 150000, times: ['09:30'] },
+    { id: 'route-train-bjn-sbi-kertajaya', from: 'BJN', to: 'SBI', km: 120, min: 110, train: 'train-kertajaya-1', price: 60000, times: ['14:05'] },
+    { id: 'route-train-smt-bjn-ambarawa', from: 'SMT', to: 'BJN', km: 190, min: 180, train: 'train-ambarawa-1', price: 85000, times: ['07:20'] },
+    { id: 'route-train-smt-ccl-ambarawa', from: 'SMT', to: 'CCL', km: 150, min: 140, train: 'train-ambarawa-1', price: 70000, times: ['07:20'] },
+    { id: 'route-train-ccl-bjn-kertajaya', from: 'CCL', to: 'BJN', km: 45, min: 45, train: 'train-kertajaya-1', price: 35000, times: ['13:20'] },
+    { id: 'route-train-gmr-tg-cheribon', from: 'GMR', to: 'TG', km: 290, min: 240, train: 'train-cheribon-1', price: 170000, times: ['09:05'] },
+    { id: 'route-train-pse-tg-menoreh', from: 'PSE', to: 'TG', km: 290, min: 260, train: 'train-menoreh-1', price: 150000, times: ['06:15'] },
+    { id: 'route-train-tg-smt-menoreh', from: 'TG', to: 'SMT', km: 165, min: 150, train: 'train-menoreh-1', price: 90000, times: ['08:50'] },
+    { id: 'route-train-gmr-pk-muria', from: 'GMR', to: 'PK', km: 390, min: 260, train: 'train-muria-1', price: 260000, times: ['06:55'] },
+    { id: 'route-train-pk-smt-muria', from: 'PK', to: 'SMT', km: 90, min: 70, train: 'train-muria-1', price: 65000, times: ['09:35'] },
+    { id: 'route-train-pse-ckp-jayakarta', from: 'PSE', to: 'CKP', km: 60, min: 60, train: 'train-jayakarta-1', price: 55000, times: ['17:10'] },
+    { id: 'route-train-bd-tsm-lodaya', from: 'BD', to: 'TSM', km: 130, min: 150, train: 'train-lodaya-1', price: 95000, times: ['07:05', '20:20'] },
+    { id: 'route-train-kac-yk-lodaya', from: 'KAC', to: 'YK', km: 520, min: 480, train: 'train-lodaya-1', price: 265000, times: ['07:25'] },
+    { id: 'route-train-pse-lpn-fajar', from: 'PSE', to: 'LPN', km: 500, min: 470, train: 'train-fajar-1', price: 350000, times: ['06:30'] },
+    { id: 'route-train-lpn-slo-bengawan', from: 'LPN', to: 'SLO', km: 65, min: 60, train: 'train-bengawan-1', price: 45000, times: ['12:20'] },
+    { id: 'route-train-yk-klt-sancaka', from: 'YK', to: 'KLT', km: 55, min: 45, train: 'train-sancaka-1', price: 35000, times: ['06:45', '17:10'] },
+    { id: 'route-train-klt-yk-sancaka', from: 'KLT', to: 'YK', km: 55, min: 45, train: 'train-sancaka-1', price: 35000, times: ['16:05'] },
+    { id: 'route-train-sgu-sdj-penataran', from: 'SGU', to: 'SDJ', km: 28, min: 35, train: 'train-penataran-1', price: 30000, times: ['08:10'] },
+    { id: 'route-train-sdj-ml-penataran', from: 'SDJ', to: 'ML', km: 90, min: 100, train: 'train-penataran-1', price: 50000, times: ['08:55'] },
+    { id: 'route-train-ml-sgu-penataran', from: 'ML', to: 'SGU', km: 118, min: 150, train: 'train-penataran-1', price: 65000, times: ['15:30'] },
+    { id: 'route-train-gmr-gr-cikuray', from: 'GMR', to: 'GR', km: 210, min: 300, train: 'train-cikuray-1', price: 90000, times: ['17:35'] },
+    { id: 'route-train-bd-gr-cikuray', from: 'BD', to: 'GR', km: 75, min: 110, train: 'train-cikuray-1', price: 45000, times: ['20:10'] },
+    { id: 'route-train-gr-bd-cikuray', from: 'GR', to: 'BD', km: 75, min: 110, train: 'train-cikuray-1', price: 40000, times: ['05:50'] },
+    { id: 'route-train-sgu-mr-dhoho', from: 'SGU', to: 'MR', km: 55, min: 60, train: 'train-dhoho-1', price: 30000, times: ['07:45'] },
+    { id: 'route-train-mr-kts-dhoho', from: 'MR', to: 'KTS', km: 45, min: 45, train: 'train-dhoho-1', price: 30000, times: ['08:55'] },
+    { id: 'route-train-sgu-bl-dhoho', from: 'SGU', to: 'BL', km: 180, min: 210, train: 'train-dhoho-1', price: 55000, times: ['07:45'] },
   ];
   const trainRouteById: Record<string, any> = {};
   for (const r of trainRoutesData) {

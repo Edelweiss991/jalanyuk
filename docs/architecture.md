@@ -1,8 +1,8 @@
-# Arsitektur JalanYuk
+# Arsitektur AYORA
 
 ## Gambaran Umum
 
-JalanYuk adalah aplikasi tiga lapis + satu modul native:
+AYORA adalah aplikasi tiga lapis + satu modul native:
 
 ```
 Browser (React SPA)

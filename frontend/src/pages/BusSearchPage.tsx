@@ -4,7 +4,7 @@ export default function BusSearchPage() {
   return (
     <SearchPage
       transportType="BUS"
-      title="JalanYuk — Cari Tiket Bus"
+      title="AYORA — Cari Tiket Bus"
     />
   );
 }
