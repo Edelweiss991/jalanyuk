@@ -62,7 +62,9 @@ const passengerSchema = z.object({
 export const createBookingSchema = z
   .object({
     transportType: z.enum(['BUS', 'TRAIN']),
-    scheduleId: z.string().cuid('ID jadwal tidak valid'),
+    // NOTE: do NOT constrain to .cuid() — seeded schedules use readable IDs
+    // (e.g. "bus-sch-826"); existence is enforced by the service lookup.
+    scheduleId: z.string().min(1, 'ID jadwal tidak valid'),
     seatNumbers: z.array(z.string()).min(1, 'Minimal 1 kursi harus dipilih'),
     passengers: z.array(passengerSchema),
     couponCode: z.string().optional(),
