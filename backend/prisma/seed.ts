@@ -685,6 +685,16 @@ async function main() {
   let trainScheduleCount = 0;
   let scheduleIndex = 0;
 
+  // Bulk generation: build all schedule + seat rows in memory with explicit
+  // IDs, then insert via createMany in chunks. The previous one-create-per-
+  // schedule version needed ~6k sequential round trips, which took the
+  // better part of an hour when the database was far from the build machine
+  // (Render build → Neon Singapore during the production DB migration).
+  const busScheduleRows: any[] = [];
+  const busSeatRows: any[] = [];
+  const trainScheduleRows: any[] = [];
+  const trainSeatRows: any[] = [];
+
   for (let ri = 0; ri < busRoutesData.length; ri++) {
     const cfg = busRoutesData[ri];
     const route = busRouteById[cfg.id];
@@ -694,26 +704,26 @@ async function main() {
       for (const time of timesForBus(cfg.tier, ri)) {
         const departureTime = departureUTC(dayOffset, time);
         const arrivalTime = new Date(departureTime.getTime() + cfg.min * 60000);
-        const schedule = await prisma.busSchedule.create({
-          data: {
-            operatorId: bus.operatorId,
-            busId: bus.id,
-            routeId: route.id,
-            departureTerminalId: route.originTerminalId,
-            arrivalTerminalId: route.destinationTerminalId,
-            departureTime,
-            arrivalTime,
-            price,
-            status: 'ACTIVE',
-          },
+        const scheduleId = `bus-sch-${scheduleIndex}`;
+        busScheduleRows.push({
+          id: scheduleId,
+          operatorId: bus.operatorId,
+          busId: bus.id,
+          routeId: route.id,
+          departureTerminalId: route.originTerminalId,
+          arrivalTerminalId: route.destinationTerminalId,
+          departureTime,
+          arrivalTime,
+          price,
+          status: 'ACTIVE',
         });
-        const seatNumbers = generateBusSeats();
-        await prisma.busSeat.createMany({
-          data: seatNumbers.map((seatNumber, i) => ({
-            scheduleId: schedule.id,
+        generateBusSeats().forEach((seatNumber, i) => {
+          busSeatRows.push({
+            id: `${scheduleId}-seat-${seatNumber}`,
+            scheduleId,
             seatNumber,
             isBooked: isDeterministicBooked(i, scheduleIndex),
-          })),
+          });
         });
         busScheduleCount++;
         scheduleIndex++;
@@ -728,32 +738,42 @@ async function main() {
       for (const time of cfg.times) {
         const departureTime = departureUTC(dayOffset, time);
         const arrivalTime = new Date(departureTime.getTime() + cfg.min * 60000);
-        const schedule = await prisma.trainSchedule.create({
-          data: {
-            operatorId: train.operatorId,
-            trainId: train.id,
-            routeId: route.id,
-            departureStationId: route.originStationId,
-            arrivalStationId: route.destinationStationId,
-            departureTime,
-            arrivalTime,
-            price: cfg.price,
-            status: 'ACTIVE',
-          },
+        const scheduleId = `train-sch-${scheduleIndex}`;
+        trainScheduleRows.push({
+          id: scheduleId,
+          operatorId: train.operatorId,
+          trainId: train.id,
+          routeId: route.id,
+          departureStationId: route.originStationId,
+          arrivalStationId: route.destinationStationId,
+          departureTime,
+          arrivalTime,
+          price: cfg.price,
+          status: 'ACTIVE',
         });
-        const seatNumbers = generateTrainSeats();
-        await prisma.trainSeat.createMany({
-          data: seatNumbers.map((seatNumber, i) => ({
-            scheduleId: schedule.id,
+        generateTrainSeats().forEach((seatNumber, i) => {
+          trainSeatRows.push({
+            id: `${scheduleId}-seat-${seatNumber}`,
+            scheduleId,
             seatNumber,
             isBooked: isDeterministicBooked(i, scheduleIndex),
-          })),
+          });
         });
         trainScheduleCount++;
         scheduleIndex++;
       }
     }
   }
+
+  async function insertInChunks(model: any, rows: any[], chunkSize: number) {
+    for (let i = 0; i < rows.length; i += chunkSize) {
+      await model.createMany({ data: rows.slice(i, i + chunkSize) });
+    }
+  }
+  await insertInChunks(prisma.busSchedule, busScheduleRows, 500);
+  await insertInChunks(prisma.busSeat, busSeatRows, 5000);
+  await insertInChunks(prisma.trainSchedule, trainScheduleRows, 500);
+  await insertInChunks(prisma.trainSeat, trainSeatRows, 5000);
 
   // Final summary
   const totalBusOperators = await prisma.busOperator.count();
