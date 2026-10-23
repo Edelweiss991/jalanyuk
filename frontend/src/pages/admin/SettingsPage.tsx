@@ -15,7 +15,7 @@ export default function SettingsPage() {
   const queryClient = useQueryClient();
   const { addToast } = useToast();
   const [form, setForm] = useState<Record<string, string>>({});
-  const [couponForm, setCouponForm] = useState({ code: '', type: 'PERCENTAGE', value: '10', minSpend: '0', maxDiscount: '', usageLimit: '', expiresAt: '' });
+  const [couponForm, setCouponForm] = useState({ code: '', type: 'PERCENTAGE', value: '10', minSpend: '0', maxDiscount: '', expiresAt: '' });
 
   const { data: settings, isLoading } = useQuery({ queryKey: ['admin', 'settings'], queryFn: adminApi.settings });
   const { data: coupons } = useQuery({ queryKey: ['admin', 'coupons'], queryFn: () => adminApi.get('coupons', { limit: 50 }) });
@@ -37,11 +37,10 @@ export default function SettingsPage() {
   const couponMutation = useMutation({
     mutationFn: () => adminApi.post('coupons', {
       code: couponForm.code.toUpperCase(),
-      type: couponForm.type,
-      value: Number(couponForm.value),
-      minSpend: Number(couponForm.minSpend || 0),
+      discountType: couponForm.type === 'PERCENTAGE' ? 'PERCENT' : 'FIXED',
+      discountValue: Number(couponForm.value),
+      minTransaction: Number(couponForm.minSpend || 0),
       ...(couponForm.maxDiscount ? { maxDiscount: Number(couponForm.maxDiscount) } : {}),
-      ...(couponForm.usageLimit ? { usageLimit: Number(couponForm.usageLimit) } : {}),
       ...(couponForm.expiresAt ? { expiresAt: new Date(couponForm.expiresAt).toISOString() } : {}),
     }),
     onSuccess: () => { addToast('success', 'Kupon dibuat'); queryClient.invalidateQueries({ queryKey: ['admin', 'coupons'] }); },
@@ -90,8 +89,9 @@ export default function SettingsPage() {
           {(coupons?.items ?? []).map((c: any) => (
             <div key={c.id} className="flex flex-wrap items-center justify-between gap-2 border-b last:border-0 pb-2">
               <span>
-                <b className="font-mono">{c.code}</b> • {c.type === 'PERCENTAGE' ? `${c.value}%` : `Rp${c.value.toLocaleString('id-ID')}`}
-                {c.minSpend ? ` • min. Rp${c.minSpend.toLocaleString('id-ID')}` : ''} • dipakai {c.usedCount ?? 0}x
+                <b className="font-mono">{c.code}</b> • {c.discountType === 'PERCENT' ? `${c.discountValue}%` : `Rp${(c.discountValue ?? 0).toLocaleString('id-ID')}`}
+                {c.minTransaction ? ` • min. Rp${c.minTransaction.toLocaleString('id-ID')}` : ''}
+                {c.maxDiscount ? ` • maks. Rp${c.maxDiscount.toLocaleString('id-ID')}` : ''}
               </span>
               <span className="flex items-center gap-2">
                 <Badge variant={c.isActive ? 'success' : 'default'}>{c.isActive ? 'Aktif' : 'Nonaktif'}</Badge>
@@ -115,7 +115,6 @@ export default function SettingsPage() {
           <div><Label>Nilai</Label><Input type="number" value={couponForm.value} onChange={(e) => setCouponForm({ ...couponForm, value: e.target.value })} /></div>
           <div><Label>Min. Belanja (Rp)</Label><Input type="number" value={couponForm.minSpend} onChange={(e) => setCouponForm({ ...couponForm, minSpend: e.target.value })} /></div>
           <div><Label>Maks. Diskon (Rp, opsional)</Label><Input type="number" value={couponForm.maxDiscount} onChange={(e) => setCouponForm({ ...couponForm, maxDiscount: e.target.value })} /></div>
-          <div><Label>Batas Pemakaian (opsional)</Label><Input type="number" value={couponForm.usageLimit} onChange={(e) => setCouponForm({ ...couponForm, usageLimit: e.target.value })} /></div>
           <div><Label>Kedaluwarsa (opsional)</Label><Input type="date" value={couponForm.expiresAt} onChange={(e) => setCouponForm({ ...couponForm, expiresAt: e.target.value })} /></div>
         </div>
         <Button className="mt-3" onClick={() => couponMutation.mutate()} disabled={couponMutation.isPending || !couponForm.code}>

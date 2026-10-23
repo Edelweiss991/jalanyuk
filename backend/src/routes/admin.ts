@@ -2184,9 +2184,17 @@ router.get(
       },
     });
 
+    // Refunds belong to bookings that are REFUND_REQUESTED/CANCELLED/REFUNDED —
+    // never CONFIRMED — so they must not reuse the revenue `where` (which pins
+    // status=CONFIRMED and would always match zero refunds). Apply only the
+    // date-range and transport-type filters, mirroring the overview totals.
+    const refundBookingWhere: Prisma.BookingWhereInput = {};
+    if (where.createdAt) refundBookingWhere.createdAt = where.createdAt;
+    if (where.transportType) refundBookingWhere.transportType = where.transportType;
+
     const refundsData = await prisma.refund.findMany({
       where: {
-        booking: where,
+        booking: refundBookingWhere,
       },
     });
 

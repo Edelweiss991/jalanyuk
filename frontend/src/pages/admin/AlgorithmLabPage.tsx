@@ -153,9 +153,9 @@ export default function AlgorithmLabPage() {
 
         {dataset && (
           <div className="mt-4">
-            <div className="text-sm mb-2">Dataset {dataset.dataType}: <b>{dataset.count}</b> jadwal • Demo array harga: {dataset.demoArray?.length ?? 0} elemen</div>
+            <div className="text-sm mb-2">Dataset {dataType}: <b>{(dataset.items ?? []).filter((it: any) => it.transportType === dataType).length}</b> jadwal • Demo array harga: {dataset.demoArray?.length ?? 0} elemen</div>
             <div className="max-h-56 overflow-y-auto grid md:grid-cols-2 gap-2">
-              {(dataset.items ?? []).slice(0, 20).map((it: any) => (
+              {(dataset.items ?? []).filter((it: any) => it.transportType === dataType).slice(0, 20).map((it: any) => (
                 <div key={it.id} className="rounded-lg border p-2 text-xs">
                   <span className="font-mono text-muted-foreground">[{it.id}]</span> <b>{it.label}</b><br />
                   {it.origin} → {it.destination} • {formatIDR(it.price)}
@@ -167,9 +167,9 @@ export default function AlgorithmLabPage() {
 
         {arrayData && (
           <div className="mt-4">
-            <div className="text-sm font-medium mb-2">Array mentah ({arrayData.count} elemen, terindeks)</div>
+            <div className="text-sm font-medium mb-2">Array mentah ({(arrayData.before ?? []).length} elemen, terindeks)</div>
             <div className="flex flex-wrap gap-1.5">
-              {(arrayData.items ?? []).map((it: any) => (
+              {(arrayData.before ?? []).map((it: any) => (
                 <div key={it.index} className="rounded-md border px-2 py-1 text-xs text-center">
                   <div className="text-muted-foreground">[{it.index}]</div>
                   <div className="font-semibold">{formatIDR(it.price)}</div>
@@ -226,7 +226,7 @@ export default function AlgorithmLabPage() {
             <>
               <p className="text-sm mt-3">
                 {linearResult.found
-                  ? <>Ditemukan di indeks <b>{linearResult.foundIndex}</b>: {linearResult.result?.label} ({linearResult.result?.origin} → {linearResult.result?.destination}) setelah {linearResult.comparisons} perbandingan.</>
+                  ? <>Ditemukan di indeks <b>{linearResult.index}</b>: {linearResult.item?.label} ({linearResult.item?.origin} → {linearResult.item?.destination}) setelah {linearResult.comparisons} perbandingan.</>
                   : <>Tidak ditemukan setelah memeriksa {linearResult.comparisons} elemen.</>}
               </p>
               <LogViewer title="Log Linear Search" log={linearResult.log ?? []} />
@@ -244,9 +244,9 @@ export default function AlgorithmLabPage() {
           {binaryResult && (
             <>
               <p className="text-sm mt-3">
-                {binaryResult.found
-                  ? <>Harga ditemukan di indeks <b>{binaryResult.foundIndex}</b> pada array terurut setelah {binaryResult.comparisons} langkah.</>
-                  : <>Harga tidak ditemukan ({binaryResult.comparisons} langkah). Array sudah terurut sebelum pencarian.</>}
+                {binaryResult.result?.found
+                  ? <>Harga ditemukan di indeks <b>{binaryResult.result.index}</b> pada array terurut setelah {binaryResult.result.comparisons} langkah: {binaryResult.result.item?.label} ({binaryResult.result.item?.origin} → {binaryResult.result.item?.destination}).</>
+                  : <>Harga tidak ditemukan ({binaryResult.result?.comparisons ?? 0} langkah). Array sudah terurut sebelum pencarian.</>}
               </p>
               <LogViewer title="Log Binary Search" log={binaryResult.log ?? []} />
             </>
