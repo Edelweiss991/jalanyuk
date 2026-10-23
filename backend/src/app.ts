@@ -12,6 +12,11 @@ import { notFound } from './utils/errors';
 export const createApp = () => {
   const app = express();
 
+  // Behind Render's proxy: trust the first X-Forwarded-For hop so
+  // express-rate-limit reads the real client IP (silences
+  // ERR_ERL_UNEXPECTED_X_FORWARDED_FOR and makes limits accurate).
+  app.set('trust proxy', 1);
+
   // Security headers
   app.use((_req: Request, res: Response, next: NextFunction) => {
     res.setHeader('X-Content-Type-Options', 'nosniff');
