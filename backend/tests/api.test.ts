@@ -96,7 +96,7 @@ describe('Booking flow & integritas harga', () => {
     expect(b.subtotal).toBe(schedulePrice * 2);
     expect(b.serviceFee).toBe(5000 * 2);
     expect(b.total).toBe(b.subtotal + b.serviceFee - b.discount);
-    expect(b.code).toMatch(/^JY-/);
+    expect(b.code).toMatch(/^AY-/);
   }, 30000);
 
   it('idempotency: request sama tidak membuat booking ganda', async () => {
