@@ -118,13 +118,13 @@ export default function LoginPage() {
                 <div>
                   <div className="font-medium">Customer:</div>
                   <div className="font-mono text-xs mt-1">
-                    demo@jalanyuk.id / demo123
+                    demo@ayora.id / demo123
                   </div>
                 </div>
                 <div>
                   <div className="font-medium">Admin:</div>
                   <div className="font-mono text-xs mt-1">
-                    admin@jalanyuk.id / admin123
+                    admin@ayora.id / admin123
                   </div>
                 </div>
               </div>

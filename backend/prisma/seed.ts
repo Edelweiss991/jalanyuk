@@ -143,9 +143,9 @@ async function main() {
 
   // STEP 3: Users (Admin & Customer Demo)
   console.log('👤 Creating demo users...');
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@jalanyuk.id';
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@ayora.id';
   const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
-  const customerEmail = process.env.CUSTOMER_EMAIL || 'demo@jalanyuk.id';
+  const customerEmail = process.env.CUSTOMER_EMAIL || 'demo@ayora.id';
   const customerPassword = process.env.CUSTOMER_PASSWORD || 'demo123';
 
   const adminPasswordHash = await bcrypt.hash(adminPassword, 10);

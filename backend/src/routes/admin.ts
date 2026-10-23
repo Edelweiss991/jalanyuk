@@ -2259,7 +2259,7 @@ router.get(
     const csv = csvHeader + csvRows.join('\n');
 
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
-    res.setHeader('Content-Disposition', 'attachment; filename="jalanyuk-report.csv"');
+    res.setHeader('Content-Disposition', 'attachment; filename="ayora-report.csv"');
     res.send(csv);
   })
 );

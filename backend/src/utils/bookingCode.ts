@@ -4,7 +4,7 @@ import crypto from 'crypto';
 const CHARSET = '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
 
 export const generateBookingCode = (): string => {
-  let code = 'JY-';
+  let code = 'AY-';
   for (let i = 0; i < 8; i++) {
     const randomIndex = crypto.randomInt(0, CHARSET.length);
     code += CHARSET[randomIndex];

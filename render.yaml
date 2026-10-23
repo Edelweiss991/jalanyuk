@@ -21,10 +21,10 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: ADMIN_EMAIL
-        value: admin@jalanyuk.id
+        value: admin@ayora.id
       - key: ADMIN_PASSWORD
         value: admin123
       - key: CUSTOMER_EMAIL
-        value: demo@jalanyuk.id
+        value: demo@ayora.id
       - key: CUSTOMER_PASSWORD
         value: demo123

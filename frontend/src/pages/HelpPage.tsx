@@ -116,11 +116,11 @@ export default function HelpPage() {
               Tim support kami siap membantu Anda 24/7 melalui email
             </p>
             <a
-              href="mailto:support@jalanyuk.id"
+              href="mailto:support@ayora.id"
               className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
             >
               <Mail className="w-5 h-5" />
-              support@jalanyuk.id
+              support@ayora.id
             </a>
           </div>
         </div>
@@ -145,7 +145,7 @@ export default function HelpPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
-              <span>Untuk akun demo, gunakan: demo@jalanyuk.id / demo123 (customer) atau admin@jalanyuk.id / admin123 (admin)</span>
+              <span>Untuk akun demo, gunakan: demo@ayora.id / demo123 (customer) atau admin@ayora.id / admin123 (admin)</span>
             </li>
           </ul>
         </div>

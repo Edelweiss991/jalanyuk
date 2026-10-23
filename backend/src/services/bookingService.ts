@@ -106,7 +106,7 @@ async function generateBookingCode(maxRetries = 5): Promise<string> {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   
   for (let attempt = 0; attempt < maxRetries; attempt++) {
-    let code = 'JY-';
+    let code = 'AY-';
     for (let i = 0; i < 8; i++) {
       code += chars.charAt(Math.floor(Math.random() * chars.length));
     }
