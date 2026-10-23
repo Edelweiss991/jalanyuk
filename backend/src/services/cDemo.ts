@@ -312,7 +312,9 @@ export async function getLabDataset(): Promise<{
   // Process bus schedules
   for (const schedule of busSchedules) {
     const departureDate = new Date(schedule.departureTime);
-    const departureMinutes = departureDate.getHours() * 60 + departureDate.getMinutes();
+    // Wall-clock minutes in Asia/Jakarta (WIB = UTC+7), independent of server TZ
+    const jakartaDate = new Date(departureDate.getTime() + 7 * 60 * 60 * 1000);
+    const departureMinutes = jakartaDate.getUTCHours() * 60 + jakartaDate.getUTCMinutes();
 
     const item: LabDatasetItem = {
       id: stableNumericId(schedule.id),
@@ -332,7 +334,9 @@ export async function getLabDataset(): Promise<{
   // Process train schedules
   for (const schedule of trainSchedules) {
     const departureDate = new Date(schedule.departureTime);
-    const departureMinutes = departureDate.getHours() * 60 + departureDate.getMinutes();
+    // Wall-clock minutes in Asia/Jakarta (WIB = UTC+7), independent of server TZ
+    const jakartaDate = new Date(departureDate.getTime() + 7 * 60 * 60 * 1000);
+    const departureMinutes = jakartaDate.getUTCHours() * 60 + jakartaDate.getUTCMinutes();
 
     const item: LabDatasetItem = {
       id: stableNumericId(schedule.id),

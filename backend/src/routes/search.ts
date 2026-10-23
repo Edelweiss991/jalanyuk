@@ -17,8 +17,10 @@ router.get('/search/bus', asyncHandler(async (req: Request, res: Response) => {
   const where: any = {
     status: 'ACTIVE',
     departureTime: {
-      gte: new Date(params.date ?? new Date().toISOString().slice(0, 10)),
-      lt: new Date(new Date(params.date ?? new Date().toISOString().slice(0, 10)).getTime() + 24 * 60 * 60 * 1000)
+      // Interpret the requested date as an Asia/Jakarta calendar day
+      // (WIB = UTC+7, no DST) so it matches the times users see.
+      gte: new Date(`${params.date ?? new Date().toISOString().slice(0, 10)}T00:00:00+07:00`),
+      lt: new Date(new Date(`${params.date ?? new Date().toISOString().slice(0, 10)}T00:00:00+07:00`).getTime() + 24 * 60 * 60 * 1000)
     }
   };
   
@@ -213,8 +215,10 @@ router.get('/search/train', asyncHandler(async (req: Request, res: Response) => 
   const where: any = {
     status: 'ACTIVE',
     departureTime: {
-      gte: new Date(params.date ?? new Date().toISOString().slice(0, 10)),
-      lt: new Date(new Date(params.date ?? new Date().toISOString().slice(0, 10)).getTime() + 24 * 60 * 60 * 1000)
+      // Interpret the requested date as an Asia/Jakarta calendar day
+      // (WIB = UTC+7, no DST) so it matches the times users see.
+      gte: new Date(`${params.date ?? new Date().toISOString().slice(0, 10)}T00:00:00+07:00`),
+      lt: new Date(new Date(`${params.date ?? new Date().toISOString().slice(0, 10)}T00:00:00+07:00`).getTime() + 24 * 60 * 60 * 1000)
     }
   };
   

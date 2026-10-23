@@ -150,7 +150,8 @@ model BusRoute {
   updatedAt             DateTime    @updatedAt
   schedules             BusSchedule[]
 
-  @@unique([originTerminalId, destinationTerminalId])
+  // Multiple services may share an origin-destination pair (different operators/times).
+  @@index([originTerminalId, destinationTerminalId])
 }
 
 model BusSchedule {
@@ -230,7 +231,8 @@ model TrainRoute {
   updatedAt            DateTime     @updatedAt
   schedules            TrainSchedule[]
 
-  @@unique([originStationId, destinationStationId])
+  // Multiple named trains may share an origin-destination pair.
+  @@index([originStationId, destinationStationId])
 }
 
 model Train {
