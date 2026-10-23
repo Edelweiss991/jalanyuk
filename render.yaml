@@ -10,14 +10,14 @@ services:
     runtime: node
     plan: free
     rootDir: backend
-    buildCommand: npm install --include=dev && npx prisma generate && npx prisma migrate deploy && npm run build && make -C ../algorithms-c
+    buildCommand: npm install --include=dev && npx prisma generate && npx prisma migrate deploy && npm run build && make -C ../algorithms-c && DATABASE_URL=$DIRECT_URL npx prisma db seed
     startCommand: node dist/src/index.js
     healthCheckPath: /api/health
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: jalanyuk-db
-          property: connectionString
+        sync: false
+      - key: DIRECT_URL
+        sync: false
       - key: JWT_SECRET
         generateValue: true
       - key: ADMIN_EMAIL
