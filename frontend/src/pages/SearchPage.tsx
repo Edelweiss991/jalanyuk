@@ -262,14 +262,14 @@ export default function SearchPage({ transportType, title }: SearchPageProps) {
                     placeholder="Harga minimum"
                     value={filters.minPrice}
                     onChange={(e) => updateFilters('minPrice', e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white"
                   />
                   <input
                     type="number"
                     placeholder="Harga maksimum"
                     value={filters.maxPrice}
                     onChange={(e) => updateFilters('maxPrice', e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white"
                   />
                 </div>
               </FilterSection>
@@ -280,14 +280,14 @@ export default function SearchPage({ transportType, title }: SearchPageProps) {
                     type="time"
                     value={filters.departAfter}
                     onChange={(e) => updateFilters('departAfter', e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white"
                     placeholder="Setelah"
                   />
                   <input
                     type="time"
                     value={filters.departBefore}
                     onChange={(e) => updateFilters('departBefore', e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white"
                     placeholder="Sebelum"
                   />
                 </div>
@@ -327,7 +327,7 @@ export default function SearchPage({ transportType, title }: SearchPageProps) {
                   <select
                     value={sortBy}
                     onChange={(e) => updateFilters('sortBy', e.target.value)}
-                    className="px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white"
                   >
                     {sortOptions.map((opt) => (
                       <option key={opt.value} value={opt.value}>
@@ -522,14 +522,14 @@ export default function SearchPage({ transportType, title }: SearchPageProps) {
                     placeholder="Harga minimum"
                     value={filters.minPrice}
                     onChange={(e) => updateFilters('minPrice', e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white"
                   />
                   <input
                     type="number"
                     placeholder="Harga maksimum"
                     value={filters.maxPrice}
                     onChange={(e) => updateFilters('maxPrice', e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white"
                   />
                 </div>
               </FilterSection>
@@ -540,13 +540,13 @@ export default function SearchPage({ transportType, title }: SearchPageProps) {
                     type="time"
                     value={filters.departAfter}
                     onChange={(e) => updateFilters('departAfter', e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white"
                   />
                   <input
                     type="time"
                     value={filters.departBefore}
                     onChange={(e) => updateFilters('departBefore', e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white"
                   />
                 </div>
               </FilterSection>

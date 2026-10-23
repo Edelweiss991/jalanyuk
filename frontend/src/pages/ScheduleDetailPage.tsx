@@ -278,7 +278,7 @@ export default function ScheduleDetailPage({ transportType, title }: ScheduleDet
                   <select
                     value={passengers}
                     onChange={(e) => setPassengers(parseInt(e.target.value))}
-                    className="px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    className="px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white"
                   >
                     {[...Array(10)].map((_, i) => (
                       <option key={i + 1} value={i + 1}>
