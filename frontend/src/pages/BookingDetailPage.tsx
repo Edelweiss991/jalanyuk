@@ -3,14 +3,15 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Printer, Ticket, XCircle, CreditCard } from 'lucide-react';
 import { bookingApi } from '../services/api';
+import PaymentInstructions from '../components/PaymentInstructions';
 import { Button, Card, Badge, Skeleton, ConfirmDialog, useToast } from '../components/ui';
 import { formatIDR, formatDateTime, formatDate, formatTime } from '../lib/format';
 
 const PAYMENT_LABEL: Record<string, string> = {
-  QRIS: 'QRIS (Simulasi)',
-  VIRTUAL_ACCOUNT: 'Virtual Account (Simulasi)',
-  E_WALLET: 'E-Wallet (Simulasi)',
-  CARD: 'Kartu Kredit/Debit (Simulasi)',
+  SIMULATION_QRIS: 'QRIS (Simulasi)',
+  SIMULATION_VA: 'Virtual Account (Simulasi)',
+  SIMULATION_EWALLET: 'E-Wallet (Simulasi)',
+  SIMULATION_CARD: 'Kartu Kredit/Debit (Simulasi)',
 };
 
 export default function BookingDetailPage() {
@@ -18,7 +19,6 @@ export default function BookingDetailPage() {
   const queryClient = useQueryClient();
   const { addToast } = useToast();
   const [cancelOpen, setCancelOpen] = useState(false);
-  const [method, setMethod] = useState('QRIS');
 
   const { data: booking, isLoading } = useQuery({
     queryKey: ['booking', id],
@@ -115,7 +115,7 @@ export default function BookingDetailPage() {
           <div className="flex justify-between"><span className="text-muted-foreground">Biaya layanan</span><span>{formatIDR(booking.serviceFee)}</span></div>
           {booking.discount > 0 && <div className="flex justify-between text-green-600"><span>Diskon{booking.couponCode ? ` (${booking.couponCode})` : ''}</span><span>−{formatIDR(booking.discount)}</span></div>}
           <div className="flex justify-between font-bold text-base"><span>Total</span><span>{formatIDR(booking.total)}</span></div>
-          <div className="text-xs text-muted-foreground">Metode: {booking.payment?.method} • Pembayaran Simulasi — bukan transaksi sungguhan.</div>
+          <div className="text-xs text-muted-foreground">Metode: {PAYMENT_LABEL[booking.payment?.method ?? ''] ?? booking.payment?.method} • Pembayaran Simulasi — bukan transaksi sungguhan.</div>
         </div>
 
         {isPaid && (
@@ -132,17 +132,26 @@ export default function BookingDetailPage() {
         )}
 
         {canAct && (
-          <div className="mt-6 border-t pt-4">
-            <h3 className="font-semibold mb-2 flex items-center gap-2"><CreditCard className="h-4 w-4" /> Pembayaran Simulasi</h3>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {Object.entries(PAYMENT_LABEL).map(([k, v]) => (
-                <button key={k} onClick={() => setMethod(k)} className={`px-3 py-1.5 rounded-full text-sm border ${method === k ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'}`}>{v}</button>
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Button onClick={() => payMutation.mutate('SUCCESS')} disabled={payMutation.isPending}>Simulasikan Bayar Berhasil</Button>
-              <Button variant="outline" onClick={() => payMutation.mutate('FAILED')} disabled={payMutation.isPending}>Simulasikan Gagal</Button>
-              <Button variant="outline" onClick={() => setCancelOpen(true)}>
+          <div className="mt-6 border-t pt-4 print:hidden">
+            <h3 className="font-semibold mb-3 flex items-center gap-2"><CreditCard className="h-4 w-4" /> Selesaikan Pembayaran</h3>
+            <PaymentInstructions
+              method={booking.payment?.method}
+              code={booking.code}
+              total={booking.total}
+              expiresAt={booking.expiresAt}
+            />
+            <Button
+              className="w-full mt-4 h-12 text-base"
+              onClick={() => payMutation.mutate('SUCCESS')}
+              disabled={payMutation.isPending}
+            >
+              Saya Sudah Bayar
+            </Button>
+            <div className="flex flex-wrap items-center gap-2 mt-3">
+              <span className="text-xs text-muted-foreground">Skenario simulasi lain:</span>
+              <Button size="sm" variant="outline" onClick={() => payMutation.mutate('FAILED')} disabled={payMutation.isPending}>Bayar Gagal</Button>
+              <Button size="sm" variant="outline" onClick={() => payMutation.mutate('EXPIRED')} disabled={payMutation.isPending}>Kedaluwarsa</Button>
+              <Button size="sm" variant="ghost" onClick={() => setCancelOpen(true)}>
                 <XCircle className="h-4 w-4 mr-1" /> Batalkan Booking
               </Button>
             </div>
