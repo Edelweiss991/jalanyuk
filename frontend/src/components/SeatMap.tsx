@@ -22,9 +22,13 @@ export default function SeatMap({ seats, selectedSeats, onSeatToggle, maxSelecti
       return 'bg-blue-600 text-white border-blue-600';
     }
     if (seat.status === 'BOOKED' || seat.status === 'HELD') {
-      return 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed';
+      // Deliberately dull + struck through so it can never be confused with
+      // an available seat (previously both were mid-gray in dark mode).
+      return 'bg-gray-200 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-400 dark:text-gray-600 line-through opacity-70 cursor-not-allowed';
     }
-    return 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 text-gray-900 dark:text-white';
+    // Available seats get a clear green tint — unmistakably "free" in both
+    // light and dark themes.
+    return 'bg-emerald-50 dark:bg-emerald-500/15 border-emerald-500 dark:border-emerald-400 text-emerald-900 dark:text-emerald-100 hover:bg-emerald-100 dark:hover:bg-emerald-500/30';
   };
 
   // Group seats into rows (assume 4 seats per row: 2-aisle-2)
@@ -38,7 +42,7 @@ export default function SeatMap({ seats, selectedSeats, onSeatToggle, maxSelecti
       {/* Legend */}
       <div className="flex flex-wrap gap-4 mb-6 text-sm">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded" />
+          <div className="w-8 h-8 bg-emerald-50 dark:bg-emerald-500/15 border-2 border-emerald-500 dark:border-emerald-400 rounded" />
           <span className="text-gray-600 dark:text-gray-400">Tersedia</span>
         </div>
         <div className="flex items-center gap-2">
@@ -46,7 +50,7 @@ export default function SeatMap({ seats, selectedSeats, onSeatToggle, maxSelecti
           <span className="text-gray-600 dark:text-gray-400">Dipilih</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded" />
+          <div className="w-8 h-8 bg-gray-200 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 opacity-70 rounded" />
           <span className="text-gray-600 dark:text-gray-400">Tidak Tersedia</span>
         </div>
       </div>
