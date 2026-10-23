@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { bookingApi } from '../services/api';
+import { extractBookingList } from '../lib/bookingShape';
 import { useToast } from '../components/ui';
 
 export default function DashboardPage() {
@@ -46,7 +47,7 @@ export default function DashboardPage() {
   const loadUpcomingBookings = async () => {
     try {
       setLoadingBookings(true);
-      const bookings = await bookingApi.mine();
+      const bookings = extractBookingList(await bookingApi.mine(1, 50));
 
       // Filter upcoming bookings (CONFIRMED status and future departure)
       const now = new Date();
@@ -54,14 +55,14 @@ export default function DashboardPage() {
         .filter((b: any) => {
           if (b.bookingStatus !== 'CONFIRMED') return false;
 
-          const departureTime = b.items?.[0]?.departureTime;
+          const departureTime = b.routeInfo?.departureTime;
           if (!departureTime) return false;
 
           return new Date(departureTime) > now;
         })
         .sort((a: any, b: any) => {
-          const aTime = new Date(a.items?.[0]?.departureTime || 0);
-          const bTime = new Date(b.items?.[0]?.departureTime || 0);
+          const aTime = new Date(a.routeInfo?.departureTime || 0);
+          const bTime = new Date(b.routeInfo?.departureTime || 0);
           return aTime.getTime() - bTime.getTime();
         })
         .slice(0, 3);
@@ -298,7 +299,7 @@ export default function DashboardPage() {
                 ) : (
                   <div className="space-y-4">
                     {upcomingBookings.map(booking => {
-                      const item = booking.items?.[0];
+                      const item = booking.routeInfo;
                       if (!item) return null;
 
                       const Icon = booking.transportType === 'BUS' ? Bus : Train;

@@ -5,6 +5,17 @@ import { useQuery } from '@tanstack/react-query';
 import { searchApi } from '../services/api';
 import SearchWidget from '../components/SearchWidget';
 
+// Popular-route entries look like "Jakarta - Bandung". Build a real search
+// URL from them (tomorrow, so results are reliably available) instead of the
+// old ?route= link that the search page never understood.
+function routeSearchUrl(type: 'bus' | 'kereta', route: string): string {
+  const [origin = '', destination = ''] = route.split(' - ').map((s) => s.trim());
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  const date = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  return `/${type}/search?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&date=${date}&passengers=1`;
+}
+
 export default function HomePage() {
   useEffect(() => {
     document.title = 'JalanYuk — Tiket Bus & Kereta Antarkota';
@@ -75,14 +86,14 @@ export default function HomePage() {
     {
       code: 'HEMAT20',
       discount: '20%',
-      description: 'Diskon 20% untuk pembelian pertama',
-      minAmount: 'Min. Rp 200.000',
+      description: 'Diskon 20% (maks. Rp 100.000)',
+      minAmount: 'Min. Rp 300.000',
     },
     {
       code: 'NEWUSER',
       discount: 'Rp 25.000',
       description: 'Potongan untuk pengguna baru',
-      minAmount: 'Min. Rp 150.000',
+      minAmount: 'Min. Rp 75.000',
     },
   ];
 
@@ -199,7 +210,7 @@ export default function HomePage() {
                 {popularBusRoutes.slice(0, 6).map((route, index) => (
                   <Link
                     key={index}
-                    to={`/bus/search?route=${encodeURIComponent(route)}`}
+                    to={routeSearchUrl('bus', route)}
                     className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                   >
                     <span className="text-gray-900 dark:text-white font-medium">
@@ -223,7 +234,7 @@ export default function HomePage() {
                 {popularTrainRoutes.slice(0, 6).map((route, index) => (
                   <Link
                     key={index}
-                    to={`/kereta/search?route=${encodeURIComponent(route)}`}
+                    to={routeSearchUrl('kereta', route)}
                     className="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                   >
                     <span className="text-gray-900 dark:text-white font-medium">

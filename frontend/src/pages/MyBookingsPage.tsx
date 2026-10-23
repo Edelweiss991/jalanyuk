@@ -12,6 +12,7 @@ import {
   Package,
 } from 'lucide-react';
 import { bookingApi } from '../services/api';
+import { extractBookingList } from '../lib/bookingShape';
 
 type TransportFilter = 'ALL' | 'BUS' | 'TRAIN';
 type StatusFilter = 'ALL' | 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED' | 'EXPIRED';
@@ -71,8 +72,8 @@ export default function MyBookingsPage() {
   const loadBookings = async () => {
     try {
       setIsLoading(true);
-      const data = await bookingApi.mine();
-      setBookings(data);
+      const data = await bookingApi.mine(1, 50);
+      setBookings(extractBookingList(data));
     } catch (error) {
       console.error('Failed to load bookings:', error);
     } finally {
@@ -192,8 +193,8 @@ export default function MyBookingsPage() {
           ) : (
             <div className="space-y-4">
               {filteredBookings.map(booking => {
-                const item = booking.items?.[0];
-                if (!item) return null;
+                const item = booking.routeInfo;
+                if (!item?.departureTime) return null;
 
                 const Icon = booking.transportType === 'BUS' ? Bus : Train;
                 const bookingStatusConfig = BOOKING_STATUS_CONFIG[booking.bookingStatus] || {

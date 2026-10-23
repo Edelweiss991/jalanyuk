@@ -22,7 +22,13 @@ export const updateProfileSchema = z.object({
 export const searchSchema = z.object({
   origin: z.string().optional(),
   destination: z.string().optional(),
-  date: z.string().optional(),
+  date: z
+    .string()
+    .refine(
+      (v) => /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(v)),
+      'Format tanggal harus YYYY-MM-DD dan tanggal harus valid'
+    )
+    .optional(),
   passengers: z.coerce.number().int().min(1).max(10).default(1),
   operatorId: z.string().optional(),
   className: z.string().optional(),

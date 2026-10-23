@@ -201,7 +201,9 @@ export default function ScheduleDetailPage({ transportType, title }: ScheduleDet
               <div className="flex items-center justify-between py-4 border-t border-gray-200 dark:border-gray-700">
                 <span className="text-gray-600 dark:text-gray-400">Kursi Tersedia</span>
                 <span className="font-semibold text-gray-900 dark:text-white">
-                  {schedule.availableSeats} kursi
+                  {seatsData
+                    ? seatsData.seats.filter((s: any) => s.status === 'AVAILABLE').length
+                    : schedule.availableSeats} kursi
                 </span>
               </div>
             </div>

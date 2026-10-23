@@ -53,14 +53,24 @@ export default function SearchPage({ transportType, title }: SearchPageProps) {
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['search', transportType, Object.fromEntries(searchParams)],
     queryFn: () => {
+      // The API expects `sort` with its own value vocabulary; the URL keeps
+      // the UI's `sortBy` names, so translate here.
+      const SORT_MAP: Record<string, string> = {
+        departureTime_asc: 'departure_asc',
+        departureTime_desc: 'departure_desc',
+        price_asc: 'price_asc',
+        price_desc: 'price_desc',
+        duration_asc: 'duration_asc',
+        duration_desc: 'duration_desc',
+      };
       const params: any = {
         origin,
         destination,
         date,
         passengers,
-        sortBy,
+        sort: SORT_MAP[sortBy] || 'departure_asc',
         page,
-        limit: 20,
+        pageSize: 20,
       };
 
       if (filters.operators.length) params.operators = filters.operators.join(',');
@@ -138,7 +148,6 @@ export default function SearchPage({ transportType, title }: SearchPageProps) {
     { value: 'price_desc', label: 'Harga Termahal' },
     { value: 'duration_asc', label: 'Durasi Tercepat' },
     { value: 'duration_desc', label: 'Durasi Terlama' },
-    { value: 'availableSeats_desc', label: 'Kursi Terbanyak' },
   ];
 
   const facilityOptions = [

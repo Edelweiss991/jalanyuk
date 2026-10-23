@@ -44,10 +44,13 @@ const PAYMENT_METHODS: { value: PaymentMethod; label: string }[] = [
 
 const SERVICE_FEE_PER_PASSENGER = 5000;
 
+// Mirror of the server-side coupon definitions (backend seed + validateCoupon).
+// Keep these in sync with the backend or the displayed total will differ
+// from what the server actually charges.
 const COUPONS = [
-  { code: 'JALANYUK10', discount: 0.1, minTransaction: 100000, description: 'Diskon 10% min. Rp100.000' },
-  { code: 'HEMAT20', discount: 0.2, minTransaction: 200000, description: 'Diskon 20% min. Rp200.000' },
-  { code: 'NEWUSER', discount: 0.15, minTransaction: 0, description: 'Diskon 15% untuk pengguna baru' },
+  { code: 'JALANYUK10', type: 'PERCENT' as const, value: 0.1, maxDiscount: 50000, minTransaction: 100000, description: 'Diskon 10% min. Rp100.000 (maks. Rp50.000)' },
+  { code: 'HEMAT20', type: 'PERCENT' as const, value: 0.2, maxDiscount: 100000, minTransaction: 300000, description: 'Diskon 20% min. Rp300.000 (maks. Rp100.000)' },
+  { code: 'NEWUSER', type: 'FIXED' as const, value: 25000, maxDiscount: null as number | null, minTransaction: 75000, description: 'Potongan Rp25.000 min. Rp75.000 untuk pengguna baru' },
 ];
 
 export default function CheckoutPage() {
@@ -105,10 +108,10 @@ export default function CheckoutPage() {
         setLoadingSchedule(true);
         if (transportType === 'BUS') {
           const data = await busApi.getSchedule(scheduleId);
-          setSchedule(data);
+          setSchedule((data as any).schedule ?? data);
         } else if (transportType === 'TRAIN') {
           const data = await trainApi.getSchedule(scheduleId);
-          setSchedule(data);
+          setSchedule((data as any).schedule ?? data);
         }
       } catch (error: any) {
         setScheduleError(error.response?.data?.error?.message || 'Gagal memuat jadwal');
@@ -152,9 +155,14 @@ export default function CheckoutPage() {
     const serviceFee = SERVICE_FEE_PER_PASSENGER * passengerCount;
 
     let discount = 0;
-    if (appliedCoupon) {
-      if (subtotal >= appliedCoupon.minTransaction) {
-        discount = Math.floor(subtotal * appliedCoupon.discount);
+    if (appliedCoupon && subtotal >= appliedCoupon.minTransaction) {
+      if (appliedCoupon.type === 'PERCENT') {
+        discount = Math.floor(subtotal * appliedCoupon.value);
+        if (appliedCoupon.maxDiscount != null) {
+          discount = Math.min(discount, appliedCoupon.maxDiscount);
+        }
+      } else {
+        discount = Math.min(appliedCoupon.value, subtotal);
       }
     }
 
@@ -660,7 +668,7 @@ export default function CheckoutPage() {
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
             <div className="text-center mb-6">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Pesanan Berhasil Dibuat</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-1">Kode Booking: <span className="font-mono font-bold">{booking.bookingCode}</span></p>
+              <p className="text-gray-600 dark:text-gray-400 mb-1">Kode Booking: <span className="font-mono font-bold">{booking.code}</span></p>
               {timeRemaining !== null && timeRemaining > 0 && (
                 <div className="flex items-center justify-center gap-2 text-orange-600 dark:text-orange-400 mt-3">
                   <Timer className="w-5 h-5" />
@@ -720,7 +728,7 @@ export default function CheckoutPage() {
                   <h3 className="text-xl font-bold text-green-900 dark:text-green-100 mb-2">Pembayaran Berhasil!</h3>
                   <p className="text-green-800 dark:text-green-200 mb-4">Pesanan Anda telah dikonfirmasi</p>
                   <p className="text-sm text-green-700 dark:text-green-300 mb-6">
-                    Kode Booking: <span className="font-mono font-bold text-lg">{booking.bookingCode}</span>
+                    Kode Booking: <span className="font-mono font-bold text-lg">{booking.code}</span>
                   </p>
                   <button
                     onClick={() => navigate(`/my-bookings/${booking.id}`)}
