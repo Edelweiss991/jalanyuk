@@ -3,6 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGri
 import { Bus, TrainFront, TicketCheck, Users, Wallet, Undo2 } from 'lucide-react';
 import { adminApi } from '../../services/api';
 import { Card, Skeleton, Badge } from '../../components/ui';
+import PhotoSlideshow from '../../components/PhotoSlideshow';
 import { formatIDR } from '../../lib/format';
 
 function StatCard({ icon: Icon, label, value, sub }: { icon: any; label: string; value: string; sub?: string }) {
@@ -36,6 +37,21 @@ export default function OverviewPage() {
       <div>
         <h1 className="text-2xl font-bold">Overview</h1>
         <p className="text-sm text-muted-foreground">Ringkasan dari data database nyata (label: Data Simulasi).</p>
+      </div>
+
+      {/* Welcome banner with rotating bus/train photos */}
+      <div className="relative h-44 rounded-2xl overflow-hidden shadow">
+        <PhotoSlideshow showControls={false} intervalMs={4500} />
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-950/85 via-blue-900/55 to-blue-900/10" />
+        <div className="relative h-full flex flex-col justify-center p-6">
+          <h2 className="text-white text-xl sm:text-2xl font-bold drop-shadow">
+            Selamat datang di Panel Admin AYORA
+          </h2>
+          <p className="text-white/85 text-sm mt-1 max-w-xl">
+            Kelola bus, kereta, jadwal, booking, dan pengguna — semua angka di bawah ini nyata dari
+            database.
+          </p>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">

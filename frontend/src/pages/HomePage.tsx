@@ -4,6 +4,7 @@ import { ShieldCheck, BadgePercent, Armchair, Headphones, ArrowRight, MapPin, Bu
 import { useQuery } from '@tanstack/react-query';
 import { searchApi } from '../services/api';
 import SearchWidget from '../components/SearchWidget';
+import PhotoSlideshow from '../components/PhotoSlideshow';
 
 // Popular-route entries look like "Jakarta - Bandung". Build a real search
 // URL from them (tomorrow, so results are reliably available) instead of the
@@ -122,13 +123,9 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
+      {/* Hero Section — animated photo slideshow: train <-> bus */}
       <section className="relative text-white py-20 overflow-hidden">
-        <img
-          src="/images/photos/hero.jpg"
-          alt="Kereta Api Argo Bromo Anggrek melintasi persawahan hijau"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <PhotoSlideshow intervalMs={5000} />
         <div className="absolute inset-0 bg-gradient-to-b from-blue-950/85 via-blue-900/70 to-blue-800/85" />
         <div className="relative container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center mb-12">
