@@ -176,3 +176,4 @@ Foto-foto di `frontend/public/images/photos/` berasal dari Wikimedia Commons dan
 - `surabaya.jpg` — Patung Suroboyo, Pemerintah Kota Surabaya, domain publik
 - `solo.jpg` — Keraton Surakarta Hadiningrat, oleh Fitri Penyalai, CC BY-SA 4.0
 - `semarang.jpg` — Lawang Sewu Semarang, oleh Philip Nalangan, CC BY 4.0
+- `bus-front.jpg` — Tiga bus Sinar Jaya di terminal, oleh Sulthan Naufal, CC0

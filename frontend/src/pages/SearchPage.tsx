@@ -175,8 +175,8 @@ export default function SearchPage({ transportType, title }: SearchPageProps) {
         <div className="max-w-4xl mx-auto">
           <div className="relative rounded-2xl overflow-hidden shadow-lg mb-6">
             <img
-              src={transportType === 'BUS' ? '/images/photos/bus.jpg' : '/images/photos/hero.jpg'}
-              alt={transportType === 'BUS' ? 'Bus antarkota melintasi jalan berkabut di pagi hari' : 'Kereta api antarkota melintasi persawahan'}
+              src={transportType === 'BUS' ? '/images/photos/bus-front.jpg' : '/images/photos/hero.jpg'}
+              alt={transportType === 'BUS' ? 'Deretan bus antarkota di terminal' : 'Kereta api antarkota melintasi persawahan'}
               className="w-full h-52 sm:h-64 object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />

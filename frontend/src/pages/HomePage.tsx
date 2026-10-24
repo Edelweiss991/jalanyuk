@@ -213,8 +213,8 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-6 mb-12">
             <Link to="/bus" className="group relative block rounded-2xl overflow-hidden shadow-md h-60">
               <img
-                src="/images/photos/bus.jpg"
-                alt="Bus antarkota melintasi jalan berkabut di pagi hari"
+                src="/images/photos/bus-front.jpg"
+                alt="Deretan bus Sinar Jaya di terminal"
                 loading="lazy"
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />

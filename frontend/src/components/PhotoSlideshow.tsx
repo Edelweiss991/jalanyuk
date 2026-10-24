@@ -8,7 +8,7 @@ export interface Slide {
 /** Rotating travel photos: train first (hero.jpg), then the intercity bus. */
 export const TRAVEL_SLIDES: Slide[] = [
   { src: '/images/photos/hero.jpg', label: 'Kereta Api Antarkota' },
-  { src: '/images/photos/bus.jpg', label: 'Bus Antarkota' },
+  { src: '/images/photos/bus-front.jpg', label: 'Bus Antarkota' },
 ];
 
 interface Props {

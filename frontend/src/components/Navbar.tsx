@@ -55,7 +55,7 @@ export function Navbar() {
               }
             >
               <img
-                src="/images/photos/bus.jpg"
+                src="/images/photos/bus-front.jpg"
                 alt=""
                 className="w-7 h-7 rounded-full object-cover ring-1 ring-gray-300 dark:ring-gray-600"
               />
@@ -226,7 +226,7 @@ export function Navbar() {
                 }
               >
                 <img
-                  src="/images/photos/bus.jpg"
+                  src="/images/photos/bus-front.jpg"
                   alt=""
                   className="w-8 h-8 rounded-full object-cover ring-1 ring-gray-300 dark:ring-gray-600"
                 />
