@@ -173,12 +173,22 @@ export default function SearchPage({ transportType, title }: SearchPageProps) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Cari Tiket {transportType === 'BUS' ? 'Bus' : 'Kereta'}
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            Pilih kota asal, kota tujuan, dan tanggal keberangkatan untuk melihat jadwal yang tersedia.
-          </p>
+          <div className="relative rounded-2xl overflow-hidden shadow-lg mb-6">
+            <img
+              src={transportType === 'BUS' ? '/images/photos/bus.jpg' : '/images/photos/hero.jpg'}
+              alt={transportType === 'BUS' ? 'Bus antarkota melintasi jalan berkabut di pagi hari' : 'Kereta api antarkota melintasi persawahan'}
+              className="w-full h-52 sm:h-64 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
+            <div className="absolute bottom-0 inset-x-0 p-5">
+              <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 drop-shadow">
+                Cari Tiket {transportType === 'BUS' ? 'Bus' : 'Kereta'}
+              </h1>
+              <p className="text-white/85 text-sm sm:text-base">
+                Pilih kota asal, kota tujuan, dan tanggal keberangkatan untuk melihat jadwal yang tersedia.
+              </p>
+            </div>
+          </div>
           <SearchWidget initialType={transportType} lockType />
           <p className="text-center mt-6">
             <Link to="/" className="text-blue-600 dark:text-blue-400 hover:underline">

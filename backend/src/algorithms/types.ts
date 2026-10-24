@@ -23,7 +23,12 @@ export interface LogStep {
  * positions (0-based, matching the index labels under the chart bars/cells).
  */
 export interface VisualFrame {
-  order: number[];
+  /** Display order as indices into `items`. Omit for identity order
+   *  (search demos on large datasets, where order never changes). */
+  order?: number[];
+  /** All positions below this count are already examined/ruled out.
+   *  Compact alternative to listing every position in `checked`. */
+  checkedUpTo?: number;
   /** Positions currently being compared / examined (orange). */
   active: number[];
   /** Positions whose element was just placed / taken at this step (green flash). */

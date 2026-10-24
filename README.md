@@ -162,3 +162,17 @@ Hasil aktual saat build: **backend 25/25 lulus, frontend 5/5 lulus**; typecheck 
 ---
 
 © 2026 AYORA. All rights reserved.
+
+## Kredit Foto
+
+Foto-foto di `frontend/public/images/photos/` berasal dari Wikimedia Commons dan dipakai sesuai lisensinya:
+
+- `hero.jpg` — KA Argo Bromo Anggrek di Kedunggedeh, oleh Muhammad Pascal Fajrin, CC BY-SA 4.0
+- `train.jpg` — KA Gajayana di Stasiun Blitar, oleh MAtra Pictures, CC BY-SA 4.0
+- `bus.jpg` — Bus antar kota antar provinsi, oleh Ariyadi Setiawan, CC BY-SA 4.0
+- `jakarta.jpg` — Monumen Nasional Jakarta, oleh Ramayoni, CC BY-SA 4.0
+- `bandung.jpg` — Gedung Sate, oleh Anton Leddin, CC BY-SA 3.0
+- `yogyakarta.jpg` — Tugu Yogyakarta, oleh CEphoto / Uwe Aranas, CC BY-SA 3.0
+- `surabaya.jpg` — Patung Suroboyo, Pemerintah Kota Surabaya, domain publik
+- `solo.jpg` — Keraton Surakarta Hadiningrat, oleh Fitri Penyalai, CC BY-SA 4.0
+- `semarang.jpg` — Lawang Sewu Semarang, oleh Philip Nalangan, CC BY 4.0

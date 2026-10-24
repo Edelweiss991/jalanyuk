@@ -75,6 +75,8 @@ export default function AlgorithmLabPage() {
 
   const routeLabel = (it: any) => `${it.label} (${it.origin} → ${it.destination})`;
 
+  const arrayMaxPrice = Math.max(1, ...((arrayData?.before ?? []).map((x: any) => x.price ?? 0)));
+
   return (
     <div className="space-y-6">
       <div>
@@ -114,6 +116,31 @@ export default function AlgorithmLabPage() {
         {arrayData && (
           <div className="mt-4">
             <div className="text-sm font-medium mb-2">Array mentah ({(arrayData.before ?? []).length} elemen, terindeks)</div>
+            <div className="rounded-xl border bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-900/60 p-3 sm:p-4 mb-3">
+              <div className="flex items-end gap-1 sm:gap-1.5 h-44 sm:h-52">
+                {(arrayData.before ?? []).map((it: any) => {
+                  const h = Math.max(6, Math.round(((it.price ?? 0) / arrayMaxPrice) * 100));
+                  return (
+                    <div key={it.index} className="flex-1 min-w-0 flex flex-col items-center justify-end h-full">
+                      <div className="text-[9px] sm:text-[10px] font-medium mb-1 max-w-full truncate" title={formatIDR(it.price)}>
+                        {formatIDR(it.price)}
+                      </div>
+                      <div
+                        className="w-full rounded-t-md bg-gradient-to-t from-blue-600 to-blue-400 flex justify-center pt-1"
+                        style={{ height: `${h}%` }}
+                        title={`${it.label} — ${formatIDR(it.price)}`}
+                      >
+                        <span className="text-[9px] sm:text-[10px] font-bold text-white">{it.index}</span>
+                      </div>
+                      <div className="text-[9px] text-muted-foreground mt-1 max-w-full truncate">{it.label}</div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="text-[11px] text-muted-foreground mt-2">
+                Diagram batang: setiap batang adalah satu elemen array — tingginya mengikuti harga tiket, angka di dalam batang adalah indeks array-nya.
+              </div>
+            </div>
             <div className="flex flex-wrap gap-1.5">
               {(arrayData.before ?? []).map((it: any) => (
                 <div key={it.index} className="rounded-md border px-2 py-1 text-xs text-center">
@@ -189,7 +216,7 @@ export default function AlgorithmLabPage() {
       <div className="grid lg:grid-cols-2 gap-4">
         <Card className="p-4">
           <h3 className="font-semibold">Linear Search — Cari Satu per Satu (O(n))</h3>
-          <p className="text-sm text-muted-foreground mb-3">Setiap kotak adalah satu tiket. Kotak yang sedang diperiksa menyala oranye; yang sudah dilewati memudar; yang cocok berubah hijau. Cocok untuk label operator/nama/kota.</p>
+          <p className="text-sm text-muted-foreground mb-3">Setiap kotak adalah satu tiket — dan di sini datasetnya BESAR: ratusan jadwal asli dari database (bukan sampel kecil), supaya terasa bedanya mencari satu per satu di data yang banyak. Kotak yang sedang diperiksa menyala oranye; yang sudah dilewati memudar; yang cocok berubah hijau. Cocok untuk label operator/nama/kota.</p>
           <div className="flex items-end gap-2">
             <div className="flex-1"><Label>Kata Kunci</Label><Input value={linearQuery} onChange={(e) => setLinearQuery(e.target.value)} placeholder="mis. Rosalia / Gambir / Argo" /></div>
             <Button onClick={() => linearMutation.mutate()} disabled={linearMutation.isPending || !linearQuery}>Cari</Button>
@@ -198,8 +225,8 @@ export default function AlgorithmLabPage() {
             <>
               <p className="text-sm mt-3">
                 {linearResult.found
-                  ? <>Ditemukan di indeks <b>{linearResult.index}</b>: {linearResult.item?.label} ({linearResult.item?.origin} → {linearResult.item?.destination}) setelah {linearResult.comparisons} perbandingan.</>
-                  : <>Tidak ditemukan setelah memeriksa {linearResult.comparisons} elemen.</>}
+                  ? <>Dari <b>{linearResult.items?.length ?? 0} jadwal</b> yang diperiksa: ditemukan di indeks <b>{linearResult.index}</b>: {linearResult.item?.label} ({linearResult.item?.origin} → {linearResult.item?.destination}) setelah {linearResult.comparisons} perbandingan.</>
+                  : <>Tidak ditemukan setelah memeriksa semua {linearResult.comparisons} dari {linearResult.items?.length ?? 0} jadwal.</>}
               </p>
               <StepVisualizer
                 frames={linearResult.frames ?? []}

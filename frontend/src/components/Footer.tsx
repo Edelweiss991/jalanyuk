@@ -82,6 +82,9 @@ export function Footer() {
             <p className="text-xs text-gray-500 dark:text-gray-500">
               Data Simulasi — bukan layanan operator resmi
             </p>
+            <p className="text-xs text-gray-500 dark:text-gray-500">
+              Foto: kontributor Wikimedia Commons (CC BY / CC BY-SA)
+            </p>
           </div>
         </div>
       </div>

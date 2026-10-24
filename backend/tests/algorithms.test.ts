@@ -145,6 +145,12 @@ describe('Visual frames (diagram batang / grid)', () => {
     const lin = linearSearchWithLog(items, (i) => i.price === 200000, '200000', (i) => i.price, 'BUS');
     expect(lin.frames.length).toBe(lin.log.length);
     expect(lin.frames[lin.frames.length - 1].foundIndex).toBe(1);
+    // Large-dataset contract: linear frames carry checkedUpTo instead of a
+    // full order array (order never changes and is omitted to keep the
+    // payload small for hundreds of items).
+    expect(lin.frames[1].order).toBeUndefined();
+    expect(lin.frames[1].checkedUpTo).toBe(0);
+    expect(lin.frames[lin.frames.length - 1].checkedUpTo).toBe(1);
 
     const bin = binarySearchWithLog(items, (i) => i.price, 300000, 'BUS');
     expect(bin.frames.length).toBe(bin.log.length);

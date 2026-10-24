@@ -8,7 +8,7 @@ import { mergeSortWithLog, mergeSort } from '../algorithms/mergeSort';
 import { bubbleSortWithLog } from '../algorithms/bubbleSort';
 import { linearSearchWithLog } from '../algorithms/linearSearch';
 import { binarySearchWithLog } from '../algorithms/binarySearch';
-import { getLabDataset, runCDemo } from '../services/cDemo';
+import { getLabDataset, getLabSearchPool, runCDemo } from '../services/cDemo';
 import type { LogStep } from '../algorithms/types';
 
 const router = Router();
@@ -140,10 +140,10 @@ router.post(
 
     const { dataType, query } = parsed.data;
 
-    const { items } = await getLabDataset();
-
-    // Filter by transport type
-    const filtered = items.filter((item) => item.transportType === dataType);
+    // Linear search runs on the LARGE pool of real schedules (up to 500),
+    // not the small visualization sample — scanning a long list one by one
+    // is the whole point of O(n).
+    const filtered = await getLabSearchPool(dataType, 500);
 
     // Search predicate (case-insensitive contains)
     const queryLower = query.toLowerCase();
@@ -168,6 +168,7 @@ router.post(
       index: result.index,
       item: result.found ? filtered[result.index] : null,
       items: filtered,
+      datasetSize: filtered.length,
       log: result.log,
       frames: result.frames,
       comparisons: result.comparisons,

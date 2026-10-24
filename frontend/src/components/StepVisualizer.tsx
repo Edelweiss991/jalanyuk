@@ -5,7 +5,8 @@ import { labApi } from '../services/api';
 import { Button, Select, useToast } from './ui';
 
 export interface VisualFrame {
-  order: number[];
+  order?: number[];
+  checkedUpTo?: number;
   active: number[];
   taken?: number[];
   settled?: number[];
@@ -31,6 +32,7 @@ function posState(frame: VisualFrame, pos: number): PosState {
   if (frame.taken?.includes(pos)) return 'taken';
   if (frame.settled?.includes(pos)) return 'settled';
   if (frame.checked?.includes(pos)) return 'checked';
+  if (frame.checkedUpTo !== undefined && pos < frame.checkedUpTo) return 'checked';
   return 'default';
 }
 
@@ -140,6 +142,11 @@ export default function StepVisualizer({ frames, log, items, variant, barValue, 
 
   const frame = frames[Math.min(step, last)];
   const maxValue = Math.max(1, ...items.map((it) => barValue(it)));
+  // Frames may omit `order` when the display order never changes (search
+  // demos on large datasets) — fall back to identity order.
+  const displayOrder =
+    frame.order && frame.order.length === items.length ? frame.order : items.map((_, i) => i);
+  const compactCells = variant === 'cells' && items.length > 60;
 
   const markerLabel = (pos: number): string => {
     const m = frame.markers;
@@ -160,7 +167,7 @@ export default function StepVisualizer({ frames, log, items, variant, barValue, 
       <div className="rounded-xl border bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-900/60 p-3 sm:p-4">
         {variant === 'bars' ? (
           <div className="flex items-end gap-1 sm:gap-1.5 h-56 sm:h-64">
-            {frame.order.map((itemIx, pos) => {
+            {displayOrder.map((itemIx, pos) => {
               const item = items[itemIx];
               if (!item) return null;
               const state = posState(frame, pos);
@@ -185,11 +192,25 @@ export default function StepVisualizer({ frames, log, items, variant, barValue, 
             })}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-            {frame.order.map((itemIx, pos) => {
+          <div
+            className={compactCells ? 'grid gap-1' : 'grid grid-cols-2 sm:grid-cols-4 gap-1.5'}
+            style={compactCells ? { gridTemplateColumns: 'repeat(auto-fill, minmax(34px, 1fr))' } : undefined}
+          >
+            {displayOrder.map((itemIx, pos) => {
               const item = items[itemIx];
               if (!item) return null;
               const state = posState(frame, pos);
+              if (compactCells) {
+                return (
+                  <div
+                    key={pos}
+                    className={`rounded border px-0.5 py-1 text-center text-[9px] font-medium transition-colors duration-200 ${CELL_COLORS[state]}`}
+                    title={`[${pos}] ${itemLabel(item)} — ${formatValue(item)}`}
+                  >
+                    {pos}
+                  </div>
+                );
+              }
               return (
                 <div
                   key={pos}

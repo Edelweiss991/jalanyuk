@@ -18,9 +18,6 @@ export function linearSearchWithLog<T>(
   let stepCounter = 0;
   let comparisonCount = 0;
 
-  const identityOrder = items.map((_, i) => i);
-  const checkedBefore = (i: number) => Array.from({ length: i }, (_, k) => k);
-
   const record = (
     entry: Omit<LogStep, 'step' | 'timestamp' | 'algorithm' | 'dataType'>,
     frame: VisualFrame
@@ -42,9 +39,8 @@ export function linearSearchWithLog<T>(
       result: 'Memulai pencarian linear',
     },
     {
-      order: identityOrder,
       active: [],
-      caption: `Kita mencari "${targetLabel}". Linear Search memeriksa data satu per satu, mulai dari posisi 0 — seperti mencari nama di daftar dengan membaca dari baris paling atas.`,
+      caption: `Kita mencari "${targetLabel}" di ${items.length} jadwal. Linear Search memeriksa data satu per satu, mulai dari posisi 0 — seperti mencari nama di daftar panjang dengan membaca dari baris paling atas.`,
     }
   );
 
@@ -69,9 +65,8 @@ export function linearSearchWithLog<T>(
         result: matches ? 'DITEMUKAN' : 'Lanjut ke elemen berikutnya',
       },
       {
-        order: identityOrder,
         active: matches ? [] : [i],
-        checked: checkedBefore(i),
+        checkedUpTo: i,
         foundIndex: matches ? i : undefined,
         caption: matches
           ? `Posisi ${i}: ${value} — COCOK! Ini data yang dicari.`
@@ -98,9 +93,8 @@ export function linearSearchWithLog<T>(
       result: `Total ${comparisonCount} perbandingan`,
     },
     {
-      order: identityOrder,
       active: [],
-      checked: found ? checkedBefore(foundIndex) : identityOrder,
+      checkedUpTo: found ? foundIndex : items.length,
       foundIndex: found ? foundIndex : undefined,
       caption: found
         ? `Pencarian berhenti. Data ditemukan di posisi ${foundIndex} setelah memeriksa ${comparisonCount} data.`

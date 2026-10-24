@@ -45,12 +45,12 @@ export default function HomePage() {
       ];
 
   const cities = [
-    { name: 'Jakarta', landmark: 'Monas', image: '/images/cities/jakarta.jpg' },
-    { name: 'Bandung', landmark: 'Gedung Sate', image: '/images/cities/bandung.jpg' },
-    { name: 'Yogyakarta', landmark: 'Tugu Yogyakarta', image: '/images/cities/yogyakarta.jpg' },
-    { name: 'Surabaya', landmark: 'Patung Suro & Boyo', image: '/images/cities/surabaya.jpg' },
-    { name: 'Solo', landmark: 'Keraton Surakarta', image: '/images/cities/solo.jpg' },
-    { name: 'Semarang', landmark: 'Lawang Sewu', image: '/images/cities/semarang.jpg' },
+    { name: 'Jakarta', landmark: 'Monas', image: '/images/photos/jakarta.jpg' },
+    { name: 'Bandung', landmark: 'Gedung Sate', image: '/images/photos/bandung.jpg' },
+    { name: 'Yogyakarta', landmark: 'Tugu Yogyakarta', image: '/images/photos/yogyakarta.jpg' },
+    { name: 'Surabaya', landmark: 'Patung Suro & Boyo', image: '/images/photos/surabaya.jpg' },
+    { name: 'Solo', landmark: 'Keraton Surakarta', image: '/images/photos/solo.jpg' },
+    { name: 'Semarang', landmark: 'Lawang Sewu', image: '/images/photos/semarang.jpg' },
   ];
 
   const features = [
@@ -123,13 +123,19 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-600 to-blue-800 dark:from-blue-800 dark:to-blue-950 text-white py-20">
-        <div className="container mx-auto px-4">
+      <section className="relative text-white py-20 overflow-hidden">
+        <img
+          src="/images/photos/hero.jpg"
+          alt="Kereta Api Argo Bromo Anggrek melintasi persawahan hijau"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-950/85 via-blue-900/70 to-blue-800/85" />
+        <div className="relative container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg">
               Perjalanan Lebih Mudah, Tiket dalam Satu Genggaman
             </h1>
-            <p className="text-xl md:text-2xl text-blue-100 mb-2">
+            <p className="text-xl md:text-2xl text-blue-50 mb-2 drop-shadow">
               Pesan tiket bus dan kereta antarkota Indonesia dengan mudah
             </p>
             <div className="inline-block bg-yellow-400 text-yellow-900 text-sm font-semibold px-3 py-1 rounded-full">
@@ -206,6 +212,50 @@ export default function HomePage() {
       {/* Popular Routes */}
       <section className="py-16 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
+          {/* Photo cards: Bus & Kereta */}
+          <div className="grid md:grid-cols-2 gap-6 mb-12">
+            <Link to="/bus" className="group relative block rounded-2xl overflow-hidden shadow-md h-60">
+              <img
+                src="/images/photos/bus.jpg"
+                alt="Bus antarkota melintasi jalan berkabut di pagi hari"
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+              <div className="absolute bottom-0 inset-x-0 p-5">
+                <div className="flex items-center gap-2 text-white font-bold text-2xl">
+                  <Bus className="w-7 h-7" /> Bus Antarkota
+                </div>
+                <p className="text-white/85 text-sm mt-1">
+                  Ratusan jadwal bus setiap hari ke berbagai kota di Jawa, dari belasan operator terpercaya.
+                </p>
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-white mt-2">
+                  Cari Tiket Bus <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </div>
+            </Link>
+            <Link to="/kereta" className="group relative block rounded-2xl overflow-hidden shadow-md h-60">
+              <img
+                src="/images/photos/train.jpg"
+                alt="Kereta api antarkota di stasiun"
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+              <div className="absolute bottom-0 inset-x-0 p-5">
+                <div className="flex items-center gap-2 text-white font-bold text-2xl">
+                  <Train className="w-7 h-7" /> Kereta Api
+                </div>
+                <p className="text-white/85 text-sm mt-1">
+                  Perjalanan tepat waktu antar stasiun utama di Jawa — eksekutif, bisnis, sampai ekonomi.
+                </p>
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-white mt-2">
+                  Cari Tiket Kereta <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </div>
+            </Link>
+          </div>
+
           <div className="grid md:grid-cols-2 gap-12">
             {/* Bus Routes */}
             <div>
@@ -307,8 +357,16 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-blue-600 dark:bg-blue-800 text-white">
-        <div className="container mx-auto px-4 text-center">
+      <section className="relative py-16 text-white overflow-hidden">
+        <img
+          src="/images/photos/bus.jpg"
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-blue-950/70" />
+        <div className="relative container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">
             Siap Memulai Perjalanan Anda?
           </h2>

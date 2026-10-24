@@ -386,3 +386,61 @@ export async function getLabDataset(): Promise<{
 
   return { items, prices };
 }
+
+/**
+ * Large pool of real schedules for the Linear Search demo.
+ * The sorting/binary demos intentionally use the small representative
+ * sample above (bars stay readable), but linear search only becomes
+ * meaningful on a big dataset — checking hundreds of schedules one by
+ * one is exactly what O(n) feels like. Ordered by departure time so the
+ * scan order is deterministic.
+ */
+export async function getLabSearchPool(
+  transportType: 'BUS' | 'TRAIN',
+  limit = 500
+): Promise<LabDatasetItem[]> {
+  const toMinutes = (d: Date) => {
+    const jkt = new Date(d.getTime() + 7 * 60 * 60 * 1000);
+    return jkt.getUTCHours() * 60 + jkt.getUTCMinutes();
+  };
+
+  if (transportType === 'BUS') {
+    const rows = await prisma.busSchedule.findMany({
+      take: limit,
+      include: {
+        route: { include: { originTerminal: true, destinationTerminal: true } },
+        operator: true,
+      },
+      orderBy: { departureTime: 'asc' },
+    });
+    return rows.map((s) => ({
+      id: stableNumericId(s.id),
+      transportType: 'BUS' as const,
+      label: s.operator.name,
+      origin: s.route.originTerminal.city,
+      destination: s.route.destinationTerminal.city,
+      departureMinutes: toMinutes(new Date(s.departureTime)),
+      durationMinutes: s.route.durationMinutes,
+      price: s.price,
+    }));
+  }
+
+  const rows = await prisma.trainSchedule.findMany({
+    take: limit,
+    include: {
+      route: { include: { originStation: true, destinationStation: true } },
+      train: { include: { operator: true } },
+    },
+    orderBy: { departureTime: 'asc' },
+  });
+  return rows.map((s) => ({
+    id: stableNumericId(s.id),
+    transportType: 'TRAIN' as const,
+    label: s.train.name,
+    origin: s.route.originStation.city,
+    destination: s.route.destinationStation.city,
+    departureMinutes: toMinutes(new Date(s.departureTime)),
+    durationMinutes: s.route.durationMinutes,
+    price: s.price,
+  }));
+}
