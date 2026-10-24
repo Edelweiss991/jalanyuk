@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mergeSortWithLog, mergeSort } from '../src/algorithms/mergeSort';
+import { bubbleSortWithLog } from '../src/algorithms/bubbleSort';
 import { linearSearchWithLog } from '../src/algorithms/linearSearch';
 import { binarySearchWithLog } from '../src/algorithms/binarySearch';
 
@@ -83,5 +84,70 @@ describe('Binary Search (manual)', () => {
   it('dataset kosong', () => {
     const r = binarySearchWithLog([], (i: { price: number }) => i.price, 100, 'BUS');
     expect(r.found).toBe(false);
+  });
+});
+
+describe('Bubble Sort (manual)', () => {
+  it('mengurutkan harga dengan benar dan menghitung tukar', () => {
+    const items = prices([300000, 100000, 250000, 75000, 430000, 190000]);
+    const { sorted, swaps, comparisons } = bubbleSortWithLog(items, (i) => i.price, 'BUS');
+    expect(sorted.map((i) => i.price)).toEqual([75000, 100000, 190000, 250000, 300000, 430000]);
+    expect(swaps).toBeGreaterThan(0);
+    expect(comparisons).toBeGreaterThan(0);
+  });
+
+  it('data yang sudah terurut tidak ditukar sama sekali', () => {
+    const { swaps } = bubbleSortWithLog(prices([1, 2, 3, 4]), (i) => i.price, 'BUS');
+    expect(swaps).toBe(0);
+  });
+
+  it('menangani dataset kosong & satu elemen', () => {
+    expect(bubbleSortWithLog([], (i: { price: number }) => i.price, 'BUS').sorted).toEqual([]);
+    expect(bubbleSortWithLog(prices([5]), (i) => i.price, 'BUS').sorted.map((i) => i.price)).toEqual([5]);
+  });
+
+  it('hasil sama dengan urutan referensi untuk data acak deterministik', () => {
+    const raw = Array.from({ length: 30 }, (_, i) => ((i * 104729) % 700) * 1000);
+    const { sorted } = bubbleSortWithLog(prices(raw), (i) => i.price, 'TRAIN');
+    expect(sorted.map((i) => i.price)).toEqual([...raw].sort((a, b) => a - b));
+  });
+});
+
+describe('Visual frames (diagram batang / grid)', () => {
+  it('setiap log langkah punya tepat satu frame dengan caption', () => {
+    const items = prices([300000, 100000, 250000, 75000, 430000, 190000]);
+    for (const res of [
+      mergeSortWithLog(items, (i) => i.price, 'BUS'),
+      bubbleSortWithLog(items, (i) => i.price, 'BUS'),
+    ]) {
+      expect(res.frames.length).toBe(res.log.length);
+      for (const f of res.frames) {
+        expect(f.caption.length).toBeGreaterThan(0);
+        expect(f.order.length).toBe(items.length);
+      }
+      // frame terakhir = urutan terurut penuh
+      const finalItems = res.frames[res.frames.length - 1].order.map((ix) => items[ix].price);
+      expect(finalItems).toEqual([75000, 100000, 190000, 250000, 300000, 430000]);
+      expect(res.frames[res.frames.length - 1].settled?.length).toBe(items.length);
+    }
+  });
+
+  it('frame order selalu permutasi valid dari indeks item', () => {
+    const items = prices([9, 3, 7, 3, 1, 8, 2]);
+    const { frames } = mergeSortWithLog(items, (i) => i.price, 'BUS');
+    for (const f of frames) {
+      expect([...f.order].sort((a, b) => a - b)).toEqual([0, 1, 2, 3, 4, 5, 6]);
+    }
+  });
+
+  it('linear & binary search menghasilkan frame yang selaras dengan log', () => {
+    const items = prices([100000, 200000, 300000]);
+    const lin = linearSearchWithLog(items, (i) => i.price === 200000, '200000', (i) => i.price, 'BUS');
+    expect(lin.frames.length).toBe(lin.log.length);
+    expect(lin.frames[lin.frames.length - 1].foundIndex).toBe(1);
+
+    const bin = binarySearchWithLog(items, (i) => i.price, 300000, 'BUS');
+    expect(bin.frames.length).toBe(bin.log.length);
+    expect(bin.frames[bin.frames.length - 1].foundIndex).toBe(2);
   });
 });

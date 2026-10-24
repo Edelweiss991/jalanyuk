@@ -5,6 +5,7 @@ import { asyncHandler } from '../utils/asyncHandler';
 import { ok } from '../utils/response';
 import { badRequest } from '../utils/errors';
 import { mergeSortWithLog, mergeSort } from '../algorithms/mergeSort';
+import { bubbleSortWithLog } from '../algorithms/bubbleSort';
 import { linearSearchWithLog } from '../algorithms/linearSearch';
 import { binarySearchWithLog } from '../algorithms/binarySearch';
 import { getLabDataset, runCDemo } from '../services/cDemo';
@@ -56,11 +57,12 @@ router.get(
 
 /**
  * POST /api/algorithm-lab/sort
- * Execute merge sort with logging
+ * Execute bubble sort or merge sort with logging + visual frames
  */
 const sortSchema = z.object({
   dataType: z.enum(['BUS', 'TRAIN']),
   key: z.enum(['price', 'departureMinutes', 'duration', 'label']),
+  algorithm: z.enum(['merge', 'bubble']).default('merge'),
 });
 
 router.post(
@@ -71,7 +73,7 @@ router.post(
       throw badRequest('VALIDATION_ERROR', parsed.error.errors[0].message);
     }
 
-    const { dataType, key } = parsed.data;
+    const { dataType, key, algorithm } = parsed.data;
 
     const { items } = await getLabDataset();
 
@@ -86,17 +88,35 @@ router.post(
       return item[key];
     };
 
-    const result = mergeSortWithLog(filtered, keyFn, dataType);
+    // Human-readable value formatter used in the visualizer captions
+    const formatValue = (value: number | string): string => {
+      if (key === 'price') return `Rp${Number(value).toLocaleString('id-ID')}`;
+      if (key === 'duration') return `${value} menit`;
+      if (key === 'departureMinutes') {
+        const m = Number(value);
+        return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+      }
+      return String(value);
+    };
+
+    const result =
+      algorithm === 'bubble'
+        ? bubbleSortWithLog(filtered, keyFn, dataType, formatValue)
+        : mergeSortWithLog(filtered, keyFn, dataType, formatValue);
 
     return ok(res, {
+      algorithm,
       sorted: result.sorted,
+      items: filtered,
       log: result.log,
+      frames: result.frames,
       comparisons: result.comparisons,
       merges: result.merges,
-      complexity: {
-        time: 'O(n log n)',
-        space: 'O(n)',
-      },
+      swaps: result.swaps ?? 0,
+      complexity:
+        algorithm === 'bubble'
+          ? { time: 'O(n²)', space: 'O(1)' }
+          : { time: 'O(n log n)', space: 'O(n)' },
     });
   })
 );
@@ -147,7 +167,9 @@ router.post(
       found: result.found,
       index: result.index,
       item: result.found ? filtered[result.index] : null,
+      items: filtered,
       log: result.log,
+      frames: result.frames,
       comparisons: result.comparisons,
     });
   })
@@ -181,7 +203,13 @@ router.post(
     const sorted = mergeSort(filtered, (item) => item.price);
 
     // Perform binary search
-    const result = binarySearchWithLog(sorted, (item) => item.price, targetPrice, dataType);
+    const result = binarySearchWithLog(
+      sorted,
+      (item) => item.price,
+      targetPrice,
+      dataType,
+      (v) => `Rp${v.toLocaleString('id-ID')}`
+    );
 
     return ok(res, {
       sortedArray: sorted,
@@ -192,6 +220,7 @@ router.post(
         comparisons: result.comparisons,
       },
       log: result.log,
+      frames: result.frames,
     });
   })
 );

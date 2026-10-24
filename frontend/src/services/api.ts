@@ -193,8 +193,8 @@ export const labApi = {
 
   array: () => api.get<any>('/api/algorithm-lab/array'),
 
-  sort: (dataType: 'BUS' | 'TRAIN', key: string) =>
-    api.post<any>('/api/algorithm-lab/sort', { dataType, key }),
+  sort: (dataType: 'BUS' | 'TRAIN', key: string, algorithm: 'merge' | 'bubble' = 'merge') =>
+    api.post<any>('/api/algorithm-lab/sort', { dataType, key, algorithm }),
 
   linear: (dataType: 'BUS' | 'TRAIN', query: string) =>
     api.post<any>('/api/algorithm-lab/search/linear', { dataType, query }),
